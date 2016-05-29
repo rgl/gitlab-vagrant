@@ -89,8 +89,8 @@ if $testing; then
     gitlab-ctl restart postgresql
 fi
 
-# import some example repositories.
-bash /vagrant/import-repositories.sh
+# create some example repositories.
+bash /vagrant/create-example-repositories.sh
 
 # see the gitlab services status.
 gitlab-ctl status

@@ -13,6 +13,10 @@ function psql {
 
 privateToken=$(psql -t -c 'select authentication_token from users where id=1')
 
+function git {
+    /opt/gitlab/embedded/bin/git "$@"
+}
+
 function gitlab-api {
     local method=$1; shift
     local path=$1; shift
@@ -26,21 +30,27 @@ function gitlab-api {
         "$@"
 }
 
+function gitlab-create-project {
+    local name=$1
+
+    gitlab-api POST /projects name=$name public:=true
+}
+
 # creates a new GitLab project from an existing git repository.
 # NB GitLab CE does not support mirroring a git repository.
 function gitlab-create-project-and-import {
     local sourceGitUrl=$1
     local destinationProjectName=$2
 
-    gitlab-api POST /projects name=$destinationProjectName public:=true
+    gitlab-create-project $destinationProjectName
 
-    /opt/gitlab/embedded/bin/git \
+    git \
         clone --mirror \
         $sourceGitUrl \
         $destinationProjectName
 
     pushd $destinationProjectName
-    /opt/gitlab/embedded/bin/git \
+    git \
         push --mirror \
         git@$domain:root/$destinationProjectName.git
     popd
@@ -83,3 +93,37 @@ gitlab-create-project-and-import https://github.com/xenolf/lego lego
 #   remote: fatal: Error in object
 #   error: pack-objects died of signal 13
 #gitlab-create-project-and-import https://github.com/mitchellh/vagrant.git vagrant
+
+# configure the git client.
+git config --global user.name "Root Doe"
+git config --global user.email root@$domain
+git config --global push.default simple
+
+# install git-lfs.
+# see http://docs.gitlab.com/ce/workflow/lfs/manage_large_binaries_with_git_lfs.html
+# see https://github.com/github/git-lfs/wiki/Installation
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get install -y git-lfs
+
+# create a new repository with git-lfs support.
+#
+# NB when you push to this GitLab server, the git repository will be stored
+#    somewhere inside:
+#       /var/opt/gitlab/git-data/repositories/
+#    and the lfs objects inside:
+#       /var/opt/gitlab/gitlab-rails/shared/lfs-objects/
+pushd /tmp
+gitlab-create-project use-git-lfs
+export GIT_SSL_NO_VERIFY=true
+git clone https://root:password@$domain/root/use-git-lfs.git use-git-lfs && cd use-git-lfs
+echo 'Downloading Tears of Steel. Be patient, this is about 365MB.'
+wget -q http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/tears_of_steel_720p.mov
+git lfs install
+git lfs track '*.mov'
+git lfs track '*.mkv'
+git lfs track '*.iso'
+git add .gitattributes
+git add *.mov
+git commit -m 'Add Tears of Steel'
+git push
+popd
