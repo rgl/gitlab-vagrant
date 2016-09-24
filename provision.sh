@@ -24,6 +24,15 @@ set nobackup
 autocmd BufNewFile,BufRead Vagrantfile set ft=ruby
 EOF
 
+# set the initial shell history.
+cat >~/.bash_history <<'EOF'
+tail -f /var/log/gitlab/gitlab-rails/*.log
+gitlab-ctl reconfigure
+vim /etc/gitlab/gitlab.rb
+vim /etc/hosts
+netstat -antp
+EOF
+
 # install the gitlab deb repository.
 apt-get install -y --no-install-recommends curl
 wget -qO- https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash -ex
@@ -71,6 +80,11 @@ sed -i -E "s,^(\s*#\s*)?(nginx\['redirect_http_to_https'\]\s+).+,\2= true," /etc
 
 # show the changes we've made to gitlab.rb.
 diff -u /opt/gitlab/etc/gitlab.rb.template /etc/gitlab/gitlab.rb || test $? = 1
+
+# configure gitlab to use the dc.example.com Active Directory LDAP.
+# NB this assumes you are running https://github.com/rgl/windows-domain-controller-vagrant.
+echo '192.168.56.2 dc.example.com' >>/etc/hosts
+patch --batch --quiet /etc/gitlab/gitlab.rb /vagrant/gitlab.rb-active-directory-ldap.patch
 
 # configure gitlab.
 gitlab-ctl reconfigure

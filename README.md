@@ -13,6 +13,8 @@ This [vagrant](https://www.vagrantup.com/) environment configures a basic [GitLa
     Maintenance DB: postgres
     Username: gitlab-psql
 
+GitLab is configured to access the `ldaps://dc.example.com` Active Directory LDAP endpoint (for this to work, [rgl/windows-domain-controller-vagrant](https://github.com/rgl/windows-domain-controller-vagrant]) must be up and running).
+
 Some example repositories are automatically installed, if you do not want that, comment the line that calls [`create-example-repositories.sh`](create-example-repositories.sh) inside the [`provision.sh` file](provision.sh) before running `vagrant up`.
 
 
