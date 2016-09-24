@@ -72,6 +72,7 @@ git commit -m 'some change'
 git push
 ```
 
+
 # Git Large File Storage (LFS)
 
 You can also use Git Large File Storage (LFS). As this is an external Git plugin,
@@ -121,3 +122,13 @@ git lfs env
 
 For more information [read the tutorial](https://github.com/github/git-lfs/wiki/Tutorial)
 and [the documentation](https://git-lfs.github.com/).
+
+
+# Troubleshoot
+
+Watch the logs:
+
+```bash
+sudo su
+tail -f /var/log/gitlab/gitlab-rails/*.log
+```
