@@ -8,6 +8,8 @@ set -eux
 domain=$(hostname --fqdn)
 testing=true
 
+apt-get update
+
 apt-get install -y --no-install-recommends httpie
 
 # install vim.
