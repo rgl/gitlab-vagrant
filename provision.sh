@@ -101,6 +101,12 @@ u.password_confirmation = 'password'
 u.save!
 EOF
 
+# include the gitlab api functions. 
+source /vagrant/_include_gitlab_api.sh
+
+# disable user signup.
+gitlab-api PUT /application/settings signup_enabled:=false
+
 # configure postgres to allow the host (e.g. pgAdmin III) to easily connect.
 if $testing; then
     echo 'host all all 192.168.33.0/24 trust' >> /var/opt/gitlab/postgresql/data/pg_hba.conf

@@ -1,73 +1,7 @@
 #!/bin/bash
 set -eux
 
-domain=$(hostname --fqdn)
-
-function psql {
-    sudo -sHu gitlab-psql \
-        /opt/gitlab/embedded/bin/psql \
-        -h /var/opt/gitlab/postgresql \
-        -d gitlabhq_production \
-        "$@"
-}
-
-privateToken=$(psql -t -c 'select authentication_token from users where id=1')
-
-function git {
-    /opt/gitlab/embedded/bin/git "$@"
-}
-
-function gitlab-api {
-    local method=$1; shift
-    local path=$1; shift
-    http \
-        --verbose \
-        --check-status \
-        --ignore-stdin \
-        $method \
-        "https://$domain/api/v3$path" \
-        "PRIVATE-TOKEN:$privateToken" \
-        "$@"
-}
-
-function gitlab-create-project {
-    local name=$1
-
-    gitlab-api POST /projects name=$name public:=true
-}
-
-# creates a new GitLab project from an existing git repository.
-# NB GitLab CE does not support mirroring a git repository.
-function gitlab-create-project-and-import {
-    local sourceGitUrl=$1
-    local destinationProjectName=$2
-
-    gitlab-create-project $destinationProjectName
-
-    git \
-        clone --mirror \
-        $sourceGitUrl \
-        $destinationProjectName
-
-    pushd $destinationProjectName
-    git \
-        push --mirror \
-        git@$domain:root/$destinationProjectName.git
-    popd
-
-    rm -rf $destinationProjectName
-}
-
-# generate a new ssh key for the current user account and add it to gitlab.
-if [ ! -f ~/.ssh/id_rsa ]; then
-    ssh-keygen -f ~/.ssh/id_rsa -t rsa -b 2048 -C "$USER@$domain" -N ''
-    gitlab-api POST /user/keys "title=$USER@$domain" key=@~/.ssh/id_rsa.pub
-fi
-
-# trust our own SSH server.
-if [ -z "$(ssh-keygen -F $domain 2>/dev/null)" ]; then
-    ssh-keyscan -H $domain >> ~/.ssh/known_hosts
-fi
+source /vagrant/_include_gitlab_api.sh
 
 # import some existing git repositories.
 gitlab-create-project-and-import https://github.com/rgl/gogs-vagrant.git gogs-vagrant
