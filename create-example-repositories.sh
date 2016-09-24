@@ -77,6 +77,7 @@ gitlab-create-project-and-import https://github.com/rgl/windows-domain-controlle
 gitlab-create-project-and-import https://github.com/rgl/selenium-server-windows-vagrant.git selenium-server-windows-vagrant
 gitlab-create-project-and-import https://github.com/jkbrzt/httpie.git httpie
 gitlab-create-project-and-import https://github.com/xenolf/lego lego
+gitlab-create-project-and-import https://github.com/hlandau/acme acme
 # NB we cannot import the certbot nor the boulder repository due to:
 #   remote: GitLab: An unexpected error occurred (redis-cli returned 127).
 # this seems to be a known problem (too many branches or tags).
