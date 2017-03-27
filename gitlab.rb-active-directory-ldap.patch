@@ -1,11 +1,14 @@
---- /etc/gitlab/gitlab.rb.orig	2016-09-24 16:22:56.793260923 +0100
-+++ /etc/gitlab/gitlab.rb	2016-09-24 16:57:57.667172932 +0100
-@@ -104,56 +104,28 @@
- ## Be careful not to break the identation in the ldap_servers block. It is in
- ## yaml format and the spaces must be retained. Using tabs will not work.
+--- /etc/gitlab/gitlab.rb.orig	2017-03-27 18:27:51.466144234 +0100
++++ /etc/gitlab/gitlab.rb	2017-03-27 18:33:11.474068224 +0100
+@@ -150,58 +150,30 @@
+ ###! **Be careful not to break the indentation in the ldap_servers block. It is
+ ###!   in yaml format and the spaces must be retained. Using tabs will not work.**
  
 -# gitlab_rails['ldap_enabled'] = false
--# gitlab_rails['ldap_servers'] = YAML.load <<-'EOS' # remember to close this block with 'EOS' below
++gitlab_rails['ldap_enabled'] = true
+ 
+ ###! **remember to close this block with 'EOS' below**
+-# gitlab_rails['ldap_servers'] = YAML.load <<-'EOS'
 -#   main: # 'main' is the GitLab 'provider ID' of this LDAP server
 -#     label: 'LDAP'
 -#     host: '_your_ldap_server'
@@ -54,8 +57,7 @@
 -#     admin_group: ''
 -#     sync_ssh_keys: false
 -# EOS
-+gitlab_rails['ldap_enabled'] = true
-+gitlab_rails['ldap_servers'] = YAML.load <<-'EOS' # remember to close this block with 'EOS' below
++gitlab_rails['ldap_servers'] = YAML.load <<-'EOS'
 +  main: # 'main' is the GitLab 'provider ID' of this LDAP server
 +    label: 'LDAP'
 +    host: 'dc.example.com'
@@ -77,5 +79,5 @@
 +      last_name:  'sn'
 +EOS
  
- ## Setting up Kerberos (EE only)
- ## See http://doc.gitlab.com/ee/integration/kerberos.html#http-git-access
+ ### OmniAuth Settings
+ ###! Docs: https://docs.gitlab.com/ce/integration/omniauth.html
