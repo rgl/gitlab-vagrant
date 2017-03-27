@@ -119,3 +119,10 @@ bash /vagrant/create-example-repositories.sh
 
 # see the gitlab services status.
 gitlab-ctl status
+
+# show software versions.
+dpkg-query --showformat '${Package} ${Version}\n' --show gitlab-ce
+gitlab-psql --version
+gitlab-rails --version
+/opt/gitlab/embedded/bin/redis-server --version
+/opt/gitlab/embedded/sbin/nginx -v
