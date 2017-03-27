@@ -122,7 +122,9 @@ gitlab-ctl status
 
 # show software versions.
 dpkg-query --showformat '${Package} ${Version}\n' --show gitlab-ce
-gitlab-psql --version
+/opt/gitlab/embedded/bin/git --version
+/opt/gitlab/embedded/bin/ruby -v
 gitlab-rails --version
+gitlab-psql --version
 /opt/gitlab/embedded/bin/redis-server --version
 /opt/gitlab/embedded/sbin/nginx -v
