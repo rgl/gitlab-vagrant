@@ -21,7 +21,7 @@ function gitlab-api {
         --check-status \
         --ignore-stdin \
         $method \
-        "https://$domain/api/v3$path" \
+        "https://$domain/api/v4$path" \
         "PRIVATE-TOKEN:$gitlab_private_token" \
         "$@"
 }
@@ -29,7 +29,7 @@ function gitlab-api {
 function gitlab-create-project {
     local name=$1
 
-    gitlab-api POST /projects name=$name public:=true
+    gitlab-api POST /projects name=$name visibility=public
 }
 
 # creates a new GitLab project from an existing git repository.
