@@ -20,6 +20,8 @@ Some example repositories are automatically installed, if you do not want that, 
 
 # Usage
 
+Install the [Ubuntu Base Box](https://github.com/rgl/ubuntu-vagrant).
+
 Start the environment:
 
     vagrant up 
