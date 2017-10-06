@@ -83,11 +83,13 @@ diff -u /opt/gitlab/etc/gitlab.rb.template /etc/gitlab/gitlab.rb || test $? = 1
 
 # configure gitlab to use the dc.example.com Active Directory LDAP.
 # NB this assumes you are running https://github.com/rgl/windows-domain-controller-vagrant.
-# TODO XXX the LDAP server certificate is not validated at all...
-#          see https://gitlab.com/gitlab-org/gitlab-ce/issues/1168
-#          see https://gitlab.com/gitlab-org/omniauth-ldap/merge_requests/3/diffs 
-echo '192.168.56.2 dc.example.com' >>/etc/hosts
-patch --batch --quiet /etc/gitlab/gitlab.rb /vagrant/gitlab.rb-active-directory-ldap.patch
+if [ -f /vagrant/tmp/ExampleEnterpriseRootCA.der ]; then
+    openssl x509 -inform der -in /vagrant/tmp/ExampleEnterpriseRootCA.der -out /usr/local/share/ca-certificates/ExampleEnterpriseRootCA.crt
+    update-ca-certificates --verbose
+    echo '192.168.56.2 dc.example.com' >>/etc/hosts
+    [ -n "$(which patch)" ] || apt-get install -y patch
+    patch --batch --quiet /etc/gitlab/gitlab.rb /vagrant/gitlab.rb-active-directory-ldap.patch
+fi
 
 # configure gitlab.
 gitlab-ctl reconfigure
