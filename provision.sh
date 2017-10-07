@@ -107,6 +107,14 @@ u.password_confirmation = 'password'
 u.save!
 EOF
 
+# set the gitlab sign in page title and description.
+gitlab-rails console production <<'EOF'
+a = Appearance.first_or_initialize
+a.title = 'GitLab Community Edition'
+a.description = 'Sign in on the right or [explore the public projects](/explore/projects).'
+a.save!
+EOF
+
 # include the gitlab api functions. 
 source /vagrant/_include_gitlab_api.sh
 
