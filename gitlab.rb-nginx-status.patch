@@ -1,0 +1,35 @@
+--- /etc/gitlab/gitlab.rb.orig	2017-10-06 11:48:22.908838000 +0100
++++ /etc/gitlab/gitlab.rb	2017-10-06 11:49:58.440580000 +0100
+@@ -871,19 +871,19 @@
+ # nginx['server_names_hash_bucket_size'] = 64
+ 
+ ### Nginx status
+-# nginx['status'] = {
+-#  "enable" => true,
+-#  "listen_addresses" => ["127.0.0.1"],
+-#  "fqdn" => "dev.example.com",
+-#  "port" => 9999,
+-#  "options" => {
+-#    "stub_status" => "on", # Turn on stats
+-#    "server_tokens" => "off", # Don't show the version of NGINX
+-#    "access_log" => "off", # Disable logs for stats
+-#    "allow" => "127.0.0.1", # Only allow access from localhost
+-#    "deny" => "all" # Deny access to anyone else
+-#  }
+-# }
++nginx['status'] = {
++  "enable" => true,
++  "listen_addresses" => ["127.0.0.1"],
++  "fqdn" => "localhost",
++  "port" => 8060,
++  "options" => {
++    "stub_status" => "on", # Turn on stats
++    "server_tokens" => "off", # Don't show the version of NGINX
++    "access_log" => "off", # Disable logs for stats
++    "allow" => "127.0.0.1", # Only allow access from localhost
++    "deny" => "all" # Deny access to anyone else
++  }
++}
+ 
+ ################################################################################
+ ## GitLab Logging

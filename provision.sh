@@ -81,13 +81,17 @@ sed -i -E "s,^(\s*#\s*)?(nginx\['redirect_http_to_https'\]\s+).+,\2= true," /etc
 # show the changes we've made to gitlab.rb.
 diff -u /opt/gitlab/etc/gitlab.rb.template /etc/gitlab/gitlab.rb || test $? = 1
 
+# configure nginx status.
+# see https://gitlab.com/gitlab-org/omnibus-gitlab/issues/2857
+[ -n "$(which patch)" ] || apt-get install -y patch
+patch --batch --quiet /etc/gitlab/gitlab.rb /vagrant/gitlab.rb-nginx-status.patch
+
 # configure gitlab to use the dc.example.com Active Directory LDAP.
 # NB this assumes you are running https://github.com/rgl/windows-domain-controller-vagrant.
 if [ -f /vagrant/tmp/ExampleEnterpriseRootCA.der ]; then
     openssl x509 -inform der -in /vagrant/tmp/ExampleEnterpriseRootCA.der -out /usr/local/share/ca-certificates/ExampleEnterpriseRootCA.crt
     update-ca-certificates --verbose
     echo '192.168.56.2 dc.example.com' >>/etc/hosts
-    [ -n "$(which patch)" ] || apt-get install -y patch
     patch --batch --quiet /etc/gitlab/gitlab.rb /vagrant/gitlab.rb-active-directory-ldap.patch
 fi
 
