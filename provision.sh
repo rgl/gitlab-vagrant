@@ -98,13 +98,21 @@ fi
 # configure gitlab.
 gitlab-ctl reconfigure
 
-# set the gitlab root user password.
+# set the gitlab root user password and create a personal access token.
+# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v10.4.4/app/models/user.rb
+# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v10.4.4/app/models/personal_access_token.rb
+# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v10.4.4/app/controllers/profiles/personal_access_tokens_controller.rb
 gitlab-rails console production <<'EOF'
 u = User.first
 u.password_automatically_set = false
 u.password = 'password'
 u.password_confirmation = 'password'
 u.save!
+t = PersonalAccessToken.new({
+    user: u,
+    name: 'vagrant',
+    scopes: ['api', 'read_user', 'sudo']})
+t.save!
 EOF
 
 # set the gitlab sign in page title and description.
@@ -133,6 +141,9 @@ bash /vagrant/create-example-repositories.sh
 
 # see the gitlab services status.
 gitlab-ctl status
+
+# show the gitlab environment info.
+gitlab-rake gitlab:env:info
 
 # show software versions.
 dpkg-query --showformat '${Package} ${Version}\n' --show gitlab-ce

@@ -1,6 +1,6 @@
---- /etc/gitlab/gitlab.rb.orig	2017-10-06 07:33:17.803496635 +0100
-+++ /etc/gitlab/gitlab.rb	2017-10-06 07:46:28.619501112 +0100
-@@ -185,64 +185,33 @@
+--- gitlab.rb.orig	2018-02-20 08:29:28.473692071 +0000
++++ gitlab.rb	2018-02-20 08:59:11.272633998 +0000
+@@ -195,48 +195,33 @@
  ###! **Be careful not to break the indentation in the ldap_servers block. It is
  ###!   in yaml format and the spaces must be retained. Using tabs will not work.**
  
@@ -18,19 +18,11 @@
 -#     password: '_the_password_of_the_bind_user'
 -#     encryption: 'plain' # "start_tls" or "simple_tls" or "plain"
 -#     verify_certificates: true
--#     ca_file: ''
--#     ssl_version: ''
 -#     active_directory: true
 -#     allow_username_or_email_login: false
 -#     block_auto_created_users: false
 -#     base: ''
 -#     user_filter: ''
--#     attributes:
--#       username: ['uid', 'userid', 'sAMAccountName']
--#       email:    ['mail', 'email', 'userPrincipalName']
--#       name:       'cn'
--#       first_name: 'givenName'
--#       last_name:  'sn'
 -#     ## EE only
 -#     group_base: ''
 -#     admin_group: ''
@@ -45,19 +37,11 @@
 -#     password: '_the_password_of_the_bind_user'
 -#     encryption: 'plain' # "start_tls" or "simple_tls" or "plain"
 -#     verify_certificates: true
--#     ca_file: ''
--#     ssl_version: ''
 -#     active_directory: true
 -#     allow_username_or_email_login: false
 -#     block_auto_created_users: false
 -#     base: ''
 -#     user_filter: ''
--#     attributes:
--#       username: ['uid', 'userid', 'sAMAccountName']
--#       email:    ['mail', 'email', 'userPrincipalName']
--#       name:       'cn'
--#       first_name: 'givenName'
--#       last_name:  'sn'
 -#     ## EE only
 -#     group_base: ''
 -#     admin_group: ''

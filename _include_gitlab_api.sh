@@ -8,7 +8,7 @@ function gitlab-psql {
         "$@"
 }
 
-gitlab_private_token=$(gitlab-psql -t -c 'select authentication_token from users where id=1')
+gitlab_private_token=$(gitlab-psql -t -c "select token from personal_access_tokens where user_id=1 and name='vagrant'")
 
 function git {
     /opt/gitlab/embedded/bin/git "$@"
@@ -22,7 +22,7 @@ function gitlab-api {
         --ignore-stdin \
         $method \
         "https://$domain/api/v4$path" \
-        "PRIVATE-TOKEN:$gitlab_private_token" \
+        "Private-Token:$gitlab_private_token" \
         "$@"
 }
 
