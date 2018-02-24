@@ -1,6 +1,6 @@
---- gitlab.rb.orig	2018-02-20 08:29:28.473692071 +0000
-+++ gitlab.rb	2018-02-20 08:59:11.272633998 +0000
-@@ -195,48 +195,33 @@
+--- /etc/gitlab/gitlab.rb.orig	2018-02-24 12:04:14.419592000 +0000
++++ /etc/gitlab/gitlab.rb	2018-02-24 12:12:13.338932013 +0000
+@@ -196,50 +196,34 @@
  ###! **Be careful not to break the indentation in the ldap_servers block. It is
  ###!   in yaml format and the spaces must be retained. Using tabs will not work.**
  
@@ -20,6 +20,7 @@
 -#     verify_certificates: true
 -#     active_directory: true
 -#     allow_username_or_email_login: false
+-#     lowercase_usernames: false
 -#     block_auto_created_users: false
 -#     base: ''
 -#     user_filter: ''
@@ -39,6 +40,7 @@
 -#     verify_certificates: true
 -#     active_directory: true
 -#     allow_username_or_email_login: false
+-#     lowercase_usernames: false
 -#     block_auto_created_users: false
 -#     base: ''
 -#     user_filter: ''
@@ -61,6 +63,7 @@
 +    password: 'HeyH0Password'
 +    active_directory: true
 +    allow_username_or_email_login: false
++    lowercase_usernames: false
 +    block_auto_created_users: false
 +    base: 'CN=Users,DC=example,DC=com'
 +    user_filter: '(&(objectClass=person)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))'
