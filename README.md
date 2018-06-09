@@ -134,3 +134,14 @@ Watch the logs:
 sudo su
 tail -f /var/log/gitlab/gitlab-rails/*.log
 ```
+
+
+# Monitorization
+
+By default Prometheus is configured to scrap the metric targets every 15 seconds and to store them for 15 days.
+
+You can see the current targets at:
+
+  http://gitlab.example.com:9090/targets
+
+**WARNING** prometheus is configured to listen at `0.0.0.0`, you probably want to change this.

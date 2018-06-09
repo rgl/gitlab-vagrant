@@ -124,10 +124,20 @@ a.save!
 EOF
 
 # include the gitlab api functions. 
+apt-get install -y jq
 source /vagrant/_include_gitlab_api.sh
 
 # disable user signup.
 gitlab-api PUT /application/settings signup_enabled:=false
+
+# enable prometheus metrics.
+# see https://gitlab.example.com/help/administration/monitoring/prometheus/gitlab_metrics#gitlab-prometheus-metrics
+# see https://docs.gitlab.com/ce/api/settings.html
+sed -i -E "s,^(\s*#\s*)?(prometheus\['listen_address'\]).+,\2 = '0.0.0.0:9090'," /etc/gitlab/gitlab.rb
+gitlab-api PUT /application/settings prometheus_metrics_enabled:=true
+gitlab-ctl reconfigure
+gitlab-ctl restart
+gitlab-wait-for-ready
 
 # configure postgres to allow the host (e.g. pgAdmin III) to easily connect.
 if $testing; then
@@ -153,3 +163,7 @@ gitlab-rails --version
 gitlab-psql --version
 /opt/gitlab/embedded/bin/redis-server --version
 /opt/gitlab/embedded/sbin/nginx -v
+
+# show GitLab address and root credentials.
+echo "GitLab is running at https://$domain"
+echo 'Sign in with the root user and the password password'

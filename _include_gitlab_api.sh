@@ -26,6 +26,28 @@ function gitlab-api {
         "$@"
 }
 
+function gitlab-wait-for-ready {
+    set +x
+    echo 'Waiting for GitLab to be ready...'
+    while true; do
+        body=$(
+            http \
+                --ignore-stdin \
+                GET \
+                "https://$domain/api/v4/version" \
+                "Private-Token:$gitlab_private_token")
+        if jq -e . >/dev/null 2>&1 <<<"$body"; then
+            version=$(jq -r .version <<<"$body")
+            if [[ -n "$version" ]]; then
+                echo "GitLab $version is ready!"
+                break
+            fi
+        fi
+        sleep 5
+    done
+    set -x
+}
+
 function gitlab-create-project {
     local name=$1
 
