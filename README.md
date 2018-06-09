@@ -22,12 +22,6 @@ Some example repositories are automatically installed, if you do not want that, 
 
 Install the [Ubuntu Base Box](https://github.com/rgl/ubuntu-vagrant).
 
-Install the needed plugins:
-
-```bash
-vagrant plugin install vagrant-triggers # see https://github.com/emyl/vagrant-triggers
-```
-
 Start the environment:
 
     vagrant up 
