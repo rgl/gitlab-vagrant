@@ -1,8 +1,5 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu-16.04-amd64"
+  config.vm.box = "ubuntu-18.04-amd64"
 
   config.vm.hostname = "gitlab.example.com"
 
@@ -10,8 +7,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.linked_clone = true
-    #vb.gui = true
-    vb.memory = "2048"
+    vb.memory = 2048
+    vb.cpus = 2
   end
 
   config.trigger.before :up do
