@@ -5,6 +5,13 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "private_network", ip: "192.168.33.20"
 
+  config.vm.provider 'libvirt' do |lv|
+    lv.memory = 2048
+    lv.cpus = 2
+    lv.cpu_mode = 'host-passthrough'
+    lv.keymap = 'pt'
+  end
+
   config.vm.provider "virtualbox" do |vb|
     vb.linked_clone = true
     vb.memory = 2048
