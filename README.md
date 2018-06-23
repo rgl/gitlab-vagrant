@@ -88,7 +88,7 @@ Give it a try by cloning the example repository (created by
 [create-example-repositories.sh](create-example-repositories.sh)):
 
 ```sh
-git clone https://root:password@gitlab.example.com/root/use-git-lfs.git
+git clone https://root:password@gitlab.example.com/example/use-git-lfs.git
 ```
 
 **NB** `git-lfs` always uses an `https` endpoint (even when you clone with `ssh`).

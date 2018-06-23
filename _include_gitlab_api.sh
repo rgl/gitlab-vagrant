@@ -14,6 +14,7 @@ function git {
     /opt/gitlab/embedded/bin/git "$@"
 }
 
+# see https://docs.gitlab.com/ce/api/README.html
 function gitlab-api {
     local method=$1; shift
     local path=$1; shift
@@ -48,10 +49,17 @@ function gitlab-wait-for-ready {
     set -x
 }
 
-function gitlab-create-project {
+function gitlab-create-group {
     local name=$1
 
-    gitlab-api POST /projects name=$name visibility=public
+    gitlab-api POST /groups name=$name path=$name visibility=public
+}
+
+function gitlab-create-project {
+    local name=$1
+    local namespaceId=$2
+
+    gitlab-api POST /projects name=$name namespace_id=$namespaceId visibility=public
 }
 
 # creates a new GitLab project from an existing git repository.
@@ -59,8 +67,10 @@ function gitlab-create-project {
 function gitlab-create-project-and-import {
     local sourceGitUrl=$1
     local destinationProjectName=$2
+    local destinationNamespaceId=$3
+    local destinationNamespaceFullPath="$(gitlab-api GET /namespaces/$destinationNamespaceId | jq -r .full_path)"
 
-    gitlab-create-project $destinationProjectName
+    gitlab-create-project $destinationProjectName $destinationNamespaceId
 
     git \
         clone --mirror \
@@ -70,7 +80,7 @@ function gitlab-create-project-and-import {
     pushd $destinationProjectName
     git \
         push --mirror \
-        git@$domain:root/$destinationProjectName.git
+        git@$domain:$destinationNamespaceFullPath/$destinationProjectName.git
     popd
 
     rm -rf $destinationProjectName
