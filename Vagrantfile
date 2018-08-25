@@ -5,11 +5,12 @@ Vagrant.configure(2) do |config|
 
   config.vm.network "private_network", ip: "10.10.9.99", libvirt__forward_mode: "route", libvirt__dhcp_enabled: false
 
-  config.vm.provider 'libvirt' do |lv|
+  config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 2048
     lv.cpus = 2
     lv.cpu_mode = 'host-passthrough'
     lv.keymap = 'pt'
+    config.vm.synced_folder '.', '/vagrant', type: 'nfs'
   end
 
   config.vm.provider "virtualbox" do |vb|
