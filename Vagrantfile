@@ -3,7 +3,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.hostname = "gitlab.example.com"
 
-  config.vm.network "private_network", ip: "192.168.33.20"
+  config.vm.network "private_network", ip: "10.10.9.99", libvirt__forward_mode: "route", libvirt__dhcp_enabled: false
 
   config.vm.provider 'libvirt' do |lv|
     lv.memory = 2048

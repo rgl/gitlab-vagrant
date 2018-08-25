@@ -141,7 +141,7 @@ gitlab-wait-for-ready
 
 # configure postgres to allow the host (e.g. pgAdmin III) to easily connect.
 if $testing; then
-    echo 'host all all 192.168.33.0/24 trust' >> /var/opt/gitlab/postgresql/data/pg_hba.conf
+    echo 'host all all 10.10.9.0/24 trust' >> /var/opt/gitlab/postgresql/data/pg_hba.conf
     sed -i -E "s,^(\s*#\s*)?(listen_addresses\s+).+,\2= '*'," /var/opt/gitlab/postgresql/data/postgresql.conf
     gitlab-ctl restart postgresql
 fi

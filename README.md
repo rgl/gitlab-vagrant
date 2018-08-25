@@ -24,12 +24,12 @@ Install the [Ubuntu Base Box](https://github.com/rgl/ubuntu-vagrant).
 
 Start the environment:
 
-    vagrant up 
+    vagrant up
 
 Configure your host system to resolve the `gitlab.example.com` domain to this vagrant environment IP address, e.g.:
 
 ```sh
-echo '192.168.33.20 gitlab.example.com' | sudo tee -a /etc/hosts
+echo '10.10.9.99 gitlab.example.com' | sudo tee -a /etc/hosts
 ```
 
 Sign In into GitLab using the `root` username and the `password` password at:
