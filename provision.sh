@@ -146,6 +146,18 @@ if $testing; then
     gitlab-ctl restart postgresql
 fi
 
+# create artifacts that need to be shared with the other nodes.
+mkdir -p /vagrant/tmp
+pushd /vagrant/tmp
+find \
+    /etc/ssh \
+    -name 'ssh_host_*_key.pub' \
+    -exec sh -c "(echo -n '$domain '; cat {})" \; \
+    >$domain.ssh_known_hosts
+cp /etc/ssl/private/$domain-crt.pem .
+openssl x509 -outform der -in $domain-crt.pem -out $domain-crt.der
+popd
+
 # create some example repositories.
 bash /vagrant/create-example-repositories.sh
 
