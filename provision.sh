@@ -156,6 +156,13 @@ find \
     >$domain.ssh_known_hosts
 cp /etc/ssl/private/$domain-crt.pem .
 openssl x509 -outform der -in $domain-crt.pem -out $domain-crt.der
+gitlab-rails console production <<'EOF'
+File.write(
+    '/tmp/gitlab-runners-registration-token.txt',
+    Gitlab::CurrentSettings.current_application_settings.runners_registration_token)
+EOF
+cp /tmp/gitlab-runners-registration-token.txt . # NB do not use mv, as it will fail to restore the privileges on /vagrant.
+rm /tmp/gitlab-runners-registration-token.txt
 popd
 
 # create some example repositories.
