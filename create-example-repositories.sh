@@ -13,6 +13,7 @@ gitlab-create-project-and-import https://github.com/rgl/gitlab-vagrant.git gitla
 gitlab-create-project-and-import https://github.com/rgl/ubuntu-vagrant.git ubuntu-vagrant $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/windows-domain-controller-vagrant.git windows-domain-controller-vagrant $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/selenium-server-windows-vagrant.git selenium-server-windows-vagrant $example_group_id
+gitlab-create-project-and-import https://github.com/rgl/example-dotnet-source-link.git example-dotnet-source-link $example_group_id
 gitlab-create-project-and-import https://github.com/jkbrzt/httpie.git httpie $example_group_id
 gitlab-create-project-and-import https://github.com/xenolf/lego lego $example_group_id
 gitlab-create-project-and-import https://github.com/hlandau/acme acme $example_group_id
