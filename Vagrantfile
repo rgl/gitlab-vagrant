@@ -24,5 +24,6 @@ Vagrant.configure(2) do |config|
     trigger.run = {inline: "sh -c 'mkdir -p tmp && cp #{ldap_ca_cert_path} tmp'"} if File.file? ldap_ca_cert_path
   end
 
+  config.vm.provision "shell", path: "provision-mailhog.sh"
   config.vm.provision "shell", path: "provision.sh"
 end
