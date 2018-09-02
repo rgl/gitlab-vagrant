@@ -1,0 +1,14 @@
+--- /var/opt/gitlab/nginx/conf/gitlab-http.conf.orig	2018-09-02 13:15:57.553961019 +0100
++++ /var/opt/gitlab/nginx/conf/gitlab-http.conf	2018-09-02 13:17:56.538142330 +0100
+@@ -126,6 +126,11 @@
+   }
+ 
+   location / {
++    if ($http_user_agent ~ "SourceLink") {
++      #proxy_set_header Authorization "Basic cm9vdDpwYXNzd29yZA==";
++      proxy_pass http://127.0.0.1:7000;
++      break;
++    }
+     proxy_cache off;
+     proxy_pass  http://gitlab-workhorse;
+   }
