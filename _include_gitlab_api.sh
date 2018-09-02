@@ -86,6 +86,21 @@ function gitlab-create-project-and-import {
     rm -rf $destinationProjectName
 }
 
+# see https://docs.gitlab.com/ce/api/users.html#user-creation
+function gitlab-create-user {
+    local username=$1
+    local name=$2
+    local email=$3
+    local password=$4
+
+    gitlab-api POST /users \
+        "username=$username" \
+        "name=$name" \
+        "email=$email" \
+        "password=$password" \
+        skip_confirmation=true
+}
+
 # generate a new ssh key for the current user account and add it to gitlab.
 if [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen -f ~/.ssh/id_rsa -t rsa -b 2048 -C "$USER@$domain" -N ''

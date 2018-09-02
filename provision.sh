@@ -165,6 +165,9 @@ cp /tmp/gitlab-runners-registration-token.txt . # NB do not use mv, as it will f
 rm /tmp/gitlab-runners-registration-token.txt
 popd
 
+# create some example users.
+bash /vagrant/create-example-users.sh
+
 # create some example repositories.
 bash /vagrant/create-example-repositories.sh
 
