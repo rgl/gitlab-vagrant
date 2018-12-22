@@ -1,6 +1,6 @@
---- /etc/gitlab/gitlab.rb.orig	2017-10-06 11:48:22.908838000 +0100
-+++ /etc/gitlab/gitlab.rb	2017-10-06 11:49:58.440580000 +0100
-@@ -871,19 +871,19 @@
+--- /etc/gitlab/gitlab.rb.orig	2018-12-22 17:31:25.599644518 +0000
++++ /etc/gitlab/gitlab.rb	2018-12-22 17:43:04.115252738 +0000
+@@ -1041,20 +1041,20 @@
  # nginx['server_names_hash_bucket_size'] = 64
  
  ### Nginx status
@@ -9,6 +9,7 @@
 -#  "listen_addresses" => ["127.0.0.1"],
 -#  "fqdn" => "dev.example.com",
 -#  "port" => 9999,
+-#  "vts_enable" => true,
 -#  "options" => {
 -#    "stub_status" => "on", # Turn on stats
 -#    "server_tokens" => "off", # Don't show the version of NGINX
@@ -22,6 +23,7 @@
 +  "listen_addresses" => ["127.0.0.1"],
 +  "fqdn" => "localhost",
 +  "port" => 8060,
++  "vts_enable" => true,
 +  "options" => {
 +    "stub_status" => "on", # Turn on stats
 +    "server_tokens" => "off", # Don't show the version of NGINX

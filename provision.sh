@@ -1,5 +1,5 @@
 #!/bin/bash
-# see https://about.gitlab.com/downloads/#ubuntu1604
+# see https://about.gitlab.com/install/#ubuntu
 # see https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md
 # see https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/nginx.md#enable-https
 
@@ -113,6 +113,9 @@ t = PersonalAccessToken.new({
     name: 'vagrant',
     scopes: ['api', 'read_user', 'sudo']})
 t.save!
+File.write(
+    '/vagrant/tmp/gitlab-root-personal-access-token.txt',
+    t.token)
 EOF
 
 # set the gitlab sign in page title and description.
@@ -158,11 +161,9 @@ cp /etc/ssl/private/$domain-crt.pem .
 openssl x509 -outform der -in $domain-crt.pem -out $domain-crt.der
 gitlab-rails console production <<'EOF'
 File.write(
-    '/tmp/gitlab-runners-registration-token.txt',
+    '/vagrant/tmp/gitlab-runners-registration-token.txt',
     Gitlab::CurrentSettings.current_application_settings.runners_registration_token)
 EOF
-cp /tmp/gitlab-runners-registration-token.txt . # NB do not use mv, as it will fail to restore the privileges on /vagrant.
-rm /tmp/gitlab-runners-registration-token.txt
 popd
 
 # create some example users.

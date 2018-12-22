@@ -1,5 +1,6 @@
 domain=$(hostname --fqdn)
 
+# e.g. gitlab-psql -t -c "select id,name from personal_access_tokens where user_id=1 and name='vagrant'"
 function gitlab-psql {
     sudo -sHu gitlab-psql \
         /opt/gitlab/embedded/bin/psql \
@@ -8,7 +9,7 @@ function gitlab-psql {
         "$@"
 }
 
-gitlab_private_token=$(gitlab-psql -t -c "select token from personal_access_tokens where user_id=1 and name='vagrant'")
+gitlab_private_token=$(cat /vagrant/tmp/gitlab-root-personal-access-token.txt)
 
 function git {
     /opt/gitlab/embedded/bin/git "$@"
