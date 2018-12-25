@@ -27,4 +27,5 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provision-mailhog.sh"
   config.vm.provision "shell", path: "provision.sh"
   config.vm.provision "shell", path: "provision-gitlab-source-link-proxy.sh"
+  config.vm.provision "shell", path: "provision-gitlab-cli.sh"
 end

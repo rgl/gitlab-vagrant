@@ -148,3 +148,66 @@ You can see the current targets at:
   http://gitlab.example.com:9090/targets
 
 **WARNING** prometheus is configured to listen at `0.0.0.0`, you probably want to change this.
+
+
+# Command Line Interface
+
+GitLab has an [API](https://docs.gitlab.com/ce/api/README.html) which can be used from different applications, one of those, is the [`gitlab` cli application](https://python-gitlab.readthedocs.io/en/stable/cli.html), which is already installed in the vagrant environment (see [provision-gitlab-cli.sh](provision-gitlab-cli.sh)) and can be used as:
+
+```bash
+vagrant ssh
+sudo su -l
+
+# list all users.
+gitlab -o yaml -f id,name,email user list --all
+
+# list all groups and projects.
+gitlab -o yaml -f id,visibility,full_path,web_url group list --all
+gitlab -o yaml -f id,visibility,tag_list,path_with_namespace,web_url project list --all
+
+# list all the projects protected branches, tags, members.
+gitlab -o json -f id,visibility,tag_list,web_url project list --all >projects.json
+jq '.[].id' projects.json | xargs -L1 gitlab project-protected-branch list --all --project-id
+jq '.[].id' projects.json | xargs -L1 gitlab project-protected-tag list --all --project-id
+jq '.[].id' projects.json | xargs -L1 gitlab project-member list --all --project-id
+
+# use the gitlab library from a python script.
+python3 <<'EOF'
+import gitlab
+
+gl = gitlab.Gitlab.from_config()
+
+# list all users.
+for user in gl.users.list(all=True):
+    print(f'{user.id}\t{user.name}\t{user.email}')
+
+# list all groups and projects.
+for group in gl.groups.list(all=True):
+    print(f'{group.id}\t{group.visibility}\t{group.full_path}\t{group.web_url}')
+for project in gl.projects.list(all=True):
+    print(f'{project.id}\t{project.visibility}\t{project.tag_list}\t{project.path_with_namespace}\t{project.web_url}')
+
+# list project protected branches.
+for project in gl.projects.list(all=True):
+    has_i = False
+    for i in project.protectedbranches.list(all=True):
+        print(f'{project.web_url}\t{i.name}')
+        has_i = True
+    if not has_i:
+        print(project.web_url)
+
+# list project members.
+# NB these members do not include the ones added to the group.
+for project in gl.projects.list(all=True):
+    has_member = False
+    for member in project.members.list(all=True):
+        # NB the member object does not contain the email attribute, so we also fetch the user.
+        user = gl.users.get(id=member.id)
+        print(f'{project.web_url}\t{user.username}\t{user.email}')
+        has_member = True
+    if not has_member:
+        print(project.web_url)
+
+# see more examples at https://python-gitlab.readthedocs.io/en/stable/api-objects.html
+EOF
+```
