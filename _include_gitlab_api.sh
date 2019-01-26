@@ -56,6 +56,23 @@ function gitlab-create-group {
     gitlab-api POST /groups name=$name path=$name visibility=public
 }
 
+# see https://docs.gitlab.com/ce/api/groups.html#list-groups
+function gitlab-get-groups {
+    gitlab-api GET /groups
+}
+
+# see https://docs.gitlab.com/ce/api/members.html#add-a-member-to-a-group-or-project
+function gitlab-add-user-to-all-groups {
+    local user_id=$1
+    local access_level=$2
+
+    for id in $(gitlab-get-groups | jq '.[].id'); do
+        gitlab-api POST "/groups/$id/members" \
+            "user_id=$user_id" \
+            "access_level=$access_level"
+    done
+}
+
 function gitlab-create-project {
     local name=$1
     local namespaceId=$2
@@ -100,6 +117,26 @@ function gitlab-create-user {
         "email=$email" \
         "password=$password" \
         skip_confirmation=true
+}
+
+# see https://docs.gitlab.com/ce/api/users.html#for-normal-users
+function gitlab-get-user {
+    local username=$1
+
+    gitlab-api GET /users \
+        "username=$username"
+}
+
+# see https://docs.gitlab.com/ce/api/users.html#create-an-impersonation-token
+function gitlab-create-user-impersonation-token {
+    local user_id=$1
+    local name=$2
+    local scopes=$3
+
+    gitlab-api POST "/users/$user_id/impersonation_tokens" \
+        "user_id=$username" \
+        "name=$name" \
+        "scopes:=$scopes"
 }
 
 # generate a new ssh key for the current user account and add it to gitlab.
