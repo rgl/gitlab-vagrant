@@ -99,9 +99,9 @@ fi
 gitlab-ctl reconfigure
 
 # set the gitlab root user password and create a personal access token.
-# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v10.4.4/app/models/user.rb
-# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v10.4.4/app/models/personal_access_token.rb
-# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v10.4.4/app/controllers/profiles/personal_access_tokens_controller.rb
+# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v12.2.0/app/models/user.rb
+# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v12.2.0/app/models/personal_access_token.rb
+# see https://gitlab.com/gitlab-org/gitlab-ce/blob/v12.2.0/app/controllers/profiles/personal_access_tokens_controller.rb
 gitlab-rails console production <<'EOF'
 u = User.first
 u.password_automatically_set = false
@@ -113,6 +113,7 @@ t = PersonalAccessToken.new({
     name: 'vagrant',
     scopes: ['api', 'read_user', 'sudo']})
 t.save!
+FileUtils.mkdir_p('/vagrant/tmp')
 File.write(
     '/vagrant/tmp/gitlab-root-personal-access-token.txt',
     t.token)
