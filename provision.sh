@@ -140,7 +140,6 @@ gitlab-api PUT /application/settings signup_enabled:=false
 sed -i -E "s,^(\s*#\s*)?(prometheus\['listen_address'\]).+,\2 = '0.0.0.0:9090'," /etc/gitlab/gitlab.rb
 gitlab-api PUT /application/settings prometheus_metrics_enabled:=true
 gitlab-ctl reconfigure
-gitlab-ctl restart
 gitlab-wait-for-ready
 
 # configure postgres to allow the host (e.g. pgAdmin III) to easily connect.
