@@ -39,7 +39,14 @@ Sign In into GitLab using the `root` username and the `password` password at:
 
 > https://gitlab.example.com/users/sign_in
 
-Add your [public SSH key](https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key), for that open the SSH Keys page at:
+When using the default LDAP settings you can also login with LDAP credentials as the following users:
+
+| Username      | Password        |
+|---------------|-----------------|
+| `john.doe`    | `HeyH0Password` |
+| `jane.doe`    | `HeyH0Password` |
+
+After login, you should add your [public SSH key](https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key), for that open the SSH Keys page at:
 
 > https://gitlab.example.com/profile/keys
 
