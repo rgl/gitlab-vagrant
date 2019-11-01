@@ -102,7 +102,7 @@ gitlab-ctl reconfigure
 # see https://gitlab.com/gitlab-org/gitlab-ce/blob/v12.2.0/app/models/user.rb
 # see https://gitlab.com/gitlab-org/gitlab-ce/blob/v12.2.0/app/models/personal_access_token.rb
 # see https://gitlab.com/gitlab-org/gitlab-ce/blob/v12.2.0/app/controllers/profiles/personal_access_tokens_controller.rb
-gitlab-rails console production <<'EOF'
+gitlab-rails console -e production <<'EOF'
 u = User.first
 u.password_automatically_set = false
 u.password = 'password'
@@ -120,7 +120,7 @@ File.write(
 EOF
 
 # set the gitlab sign in page title and description.
-gitlab-rails console production <<'EOF'
+gitlab-rails console -e production <<'EOF'
 a = Appearance.first_or_initialize
 a.title = 'GitLab Community Edition'
 a.description = 'Sign in on the right or [explore the public projects](/explore/projects).'
@@ -159,7 +159,7 @@ find \
     >$domain.ssh_known_hosts
 cp /etc/ssl/private/$domain-crt.pem .
 openssl x509 -outform der -in $domain-crt.pem -out $domain-crt.der
-gitlab-rails console production <<'EOF'
+gitlab-rails console -e production <<'EOF'
 File.write(
     '/vagrant/tmp/gitlab-runners-registration-token.txt',
     Gitlab::CurrentSettings.current_application_settings.runners_registration_token)
