@@ -1,11 +1,12 @@
---- /etc/gitlab/gitlab.rb.orig	2019-02-22 19:54:55.707468848 +0000
-+++ /etc/gitlab/gitlab.rb	2019-02-22 20:00:52.210326518 +0000
-@@ -250,52 +250,35 @@
+--- gitlab.rb.orig	2019-12-08 07:55:59.783820854 +0000
++++ gitlab.rb	2019-12-08 08:06:59.658363989 +0000
+@@ -298,53 +298,36 @@
  ###! **Be careful not to break the indentation in the ldap_servers block. It is
  ###!   in yaml format and the spaces must be retained. Using tabs will not work.**
  
 -# gitlab_rails['ldap_enabled'] = false
 +gitlab_rails['ldap_enabled'] = true
+ # gitlab_rails['prevent_ldap_sign_in'] = false
  
  ###! **remember to close this block with 'EOS' below**
 -# gitlab_rails['ldap_servers'] = YAML.load <<-'EOS'
