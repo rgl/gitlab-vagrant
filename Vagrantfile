@@ -1,3 +1,5 @@
+gitlab_version = '12.5.3-ce.0' # NB execute apt-cache madison gitlab-ce to known the available versions.
+
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu-18.04-amd64"
 
@@ -25,7 +27,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", path: "provision-mailhog.sh"
-  config.vm.provision "shell", path: "provision.sh"
+  config.vm.provision "shell", path: "provision.sh", args: [gitlab_version]
   config.vm.provision "shell", path: "provision-gitlab-source-link-proxy.sh"
   config.vm.provision "shell", path: "provision-gitlab-cli.sh"
 end

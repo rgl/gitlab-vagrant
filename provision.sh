@@ -5,6 +5,7 @@
 
 set -eux
 
+gitlab_version="${1:-12.5.3-ce.0}"; shift || true
 domain=$(hostname --fqdn)
 testing=true
 
@@ -38,7 +39,7 @@ apt-get install -y --no-install-recommends curl
 wget -qO- https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash -ex
 
 # install gitlab with the omnibus package.
-apt-get install -y --no-install-recommends gitlab-ce
+apt-get install -y --no-install-recommends "gitlab-ce=$gitlab_version"
 
 # create a self-signed certificate and add it to the global trusted list.
 pushd /etc/ssl/private
