@@ -1,4 +1,4 @@
-gitlab_version = '12.5.3-ce.0' # NB execute apt-cache madison gitlab-ce to known the available versions.
+gitlab_version = '12.6.3-ce.0' # NB execute apt-cache madison gitlab-ce to known the available versions.
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu-18.04-amd64"
@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "10.10.9.99", libvirt__forward_mode: "route", libvirt__dhcp_enabled: false
 
   config.vm.provider 'libvirt' do |lv, config|
-    lv.memory = 2048
+    lv.memory = 3*1024
     lv.cpus = 2
     lv.cpu_mode = 'host-passthrough'
     lv.keymap = 'pt'
@@ -17,7 +17,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.linked_clone = true
-    vb.memory = 2048
+    vb.memory = 3*1024
     vb.cpus = 2
   end
 

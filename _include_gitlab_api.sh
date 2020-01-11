@@ -53,7 +53,10 @@ function gitlab-wait-for-ready {
 function gitlab-create-group {
     local name=$1
 
-    gitlab-api POST /groups name=$name path=$name visibility=public
+    local group="$(gitlab-api GET "/groups/$name?with_projects=false")"
+    local id="$(echo "$group" | jq -r .id)"
+
+    [ "$id" != 'null' ] && echo "$group" || gitlab-api POST /groups name=$name path=$name visibility=public
 }
 
 # see https://docs.gitlab.com/ce/api/groups.html#list-groups
