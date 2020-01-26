@@ -52,6 +52,10 @@ patch --batch --quiet \
     /vagrant/gitlab-http.conf-gitlab-source-link-proxy.patch
 gitlab-ctl restart nginx
 
+# wait for gitlab to be ready.
+source /vagrant/_include_gitlab_api.sh
+gitlab-wait-for-ready
+
 # try it.
 http -v --check-status --ignore-stdin \
     https://root:password@$domain/example/ubuntu-vagrant/raw/master/.gitignore \
