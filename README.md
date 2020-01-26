@@ -1,6 +1,6 @@
 # Environment
 
-This [vagrant](https://www.vagrantup.com/) environment configures a basic [GitLab Community Edition](https://gitlab.com/gitlab-org/gitlab-ce) installation using the [Omnibus GitLab](https://gitlab.com/gitlab-org/omnibus-gitlab) package.
+This [vagrant](https://www.vagrantup.com/) environment configures a basic [GitLab Community Edition](https://gitlab.com/gitlab-org/gitlab-foss) installation using the [Omnibus GitLab](https://gitlab.com/gitlab-org/omnibus-gitlab) package.
 
 [Nginx](http://nginx.org/en/) ([HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) enabled) is configured with a self-signed certificate at:
 
