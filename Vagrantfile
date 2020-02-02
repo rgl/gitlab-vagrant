@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "10.10.9.99", libvirt__forward_mode: "route", libvirt__dhcp_enabled: false
 
   config.vm.provider 'libvirt' do |lv, config|
-    lv.memory = 3*1024
+    lv.memory = 4*1024
     lv.cpus = 2
     lv.cpu_mode = 'host-passthrough'
     lv.keymap = 'pt'
@@ -17,7 +17,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.linked_clone = true
-    vb.memory = 3*1024
+    vb.memory = 4*1024
     vb.cpus = 2
   end
 
