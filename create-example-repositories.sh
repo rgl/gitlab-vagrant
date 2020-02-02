@@ -44,3 +44,34 @@ git add *
 git commit -m 'init'
 git push
 popd
+
+# create a new repository with a .gitlab-ci.yml file to show
+# information about the gitlab-runner environment.
+pushd /tmp
+gitlab-create-project gitlab-runner-environment-info $example_group_id
+git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info.git gitlab-runner-environment-info && cd gitlab-runner-environment-info
+# add a file with mixed eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with new line (LF)\n3. This line ends with carriage return and newline (CRLF)\r\n' >mixed-eol-terminators.md
+# add the .gitlab-ci.yml file.
+cat >.gitlab-ci.yml <<'EOF'
+info:
+  stage: test
+  tags:
+    - ubuntu
+    - docker
+  script:
+    - cat /etc/os-release
+    - uname -a
+    - dpkg-query -W -f='${binary:Package}\n' | sort
+    - apt-get update && apt-get install -y file
+    - id
+    - pwd
+    - env | sort
+    - mount | sort
+    - ps axuww
+    - file mixed-eol-terminators.md
+EOF
+git add * .gitlab-ci.yml
+git commit -m 'init'
+git push
+popd
