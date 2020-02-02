@@ -35,12 +35,12 @@ pushd /tmp
 gitlab-create-project use-git-lfs $example_group_id
 export GIT_SSL_NO_VERIFY=true
 git clone https://root:password@$domain/$example_group_name/use-git-lfs.git use-git-lfs && cd use-git-lfs
-echo 'Downloading Ubuntu Focal Fossa mini.iso. Be patient, this is about 74MB.'
-wget -q http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/images/netboot/mini.iso
 git lfs install
-git lfs track '*.iso'
+git lfs track '*.md'
+echo 'This file is in lfs' >in-lfs.md
+echo 'This file is in git repo db' >not-in-lfs.txt
 git add .gitattributes # NB git lfs uses this file to track the lfs file patterns.
-git add *.iso
-git commit -m 'Add netboot image'
+git add *
+git commit -m 'init'
 git push
 popd
