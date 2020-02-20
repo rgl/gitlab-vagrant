@@ -23,8 +23,6 @@ Email notifications are sent to a local [MailHog](https://github.com/mailhog/Mai
 
 # Usage
 
-Install the [Ubuntu Base Box](https://github.com/rgl/ubuntu-vagrant).
-
 Start the environment:
 
     vagrant up
