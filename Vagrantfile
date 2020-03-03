@@ -1,4 +1,4 @@
-gitlab_version = '12.7.5-ce.0' # NB execute apt-cache madison gitlab-ce to known the available versions.
+gitlab_version = '12.8.1-ce.0' # NB execute apt-cache madison gitlab-ce to known the available versions.
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu-18.04-amd64"
