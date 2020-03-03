@@ -60,6 +60,7 @@ info:
     - ubuntu
     - docker
   script:
+    - cat /proc/self/cgroup | sort
     - cat /etc/os-release
     - uname -a
     - dpkg-query -W -f='${binary:Package}\n' | sort
