@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 4*1024
-    lv.cpus = 2
+    lv.cpus = 4
     lv.cpu_mode = 'host-passthrough'
     lv.keymap = 'pt'
     config.vm.synced_folder '.', '/vagrant', type: 'nfs'
@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.linked_clone = true
     vb.memory = 4*1024
-    vb.cpus = 2
+    vb.cpus = 4
   end
 
   config.trigger.before :up do |trigger|
