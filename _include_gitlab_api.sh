@@ -77,10 +77,25 @@ function gitlab-add-user-to-all-groups {
 }
 
 function gitlab-create-project {
-    local name=$1
-    local namespaceId=$2
-
-    gitlab-api POST /projects name=$name namespace_id=$namespaceId visibility=public
+    local name="$1"
+    local namespaceId="$2"
+ 
+    # NB we need to retry this call because sometimes it fails with:
+    #       HTTP 502 Bad Gateway
+    #       GitLab is not responding
+    set +x
+    while true; do
+        body="$(gitlab-api POST /projects "name=$name" "namespace_id=$namespaceId" visibility=public)"
+        if jq -e . >/dev/null 2>&1 <<<"$body"; then
+            id=$(jq -r .id <<<"$body")
+            if [[ -n "$id" ]]; then
+                echo "$body"
+                break
+            fi
+        fi
+        sleep 5
+    done
+    set -x
 }
 
 # creates a new GitLab project from an existing git repository.
@@ -132,14 +147,31 @@ function gitlab-get-user {
 
 # see https://docs.gitlab.com/ce/api/users.html#create-an-impersonation-token
 function gitlab-create-user-impersonation-token {
-    local user_id=$1
-    local name=$2
-    local scopes=$3
+    local user_id="$1"
+    local name="$2"
+    local scopes="$3"
 
-    gitlab-api POST "/users/$user_id/impersonation_tokens" \
-        "user_id=$username" \
-        "name=$name" \
-        "scopes:=$scopes"
+    # NB we need to retry this call because sometimes it fails with:
+    #       HTTP 502 Bad Gateway
+    #       GitLab is not responding
+    set +x
+    while true; do
+        body="$(
+            gitlab-api POST "/users/$user_id/impersonation_tokens" \
+                "user_id=$username" \
+                "name=$name" \
+                "scopes:=$scopes"
+        )"
+        if jq -e . >/dev/null 2>&1 <<<"$body"; then
+            token=$(jq -r .token <<<"$body")
+            if [[ -n "$token" ]]; then
+                echo "$body"
+                break
+            fi
+        fi
+        sleep 5
+    done
+    set -x
 }
 
 # generate a new ssh key for the current user account and add it to gitlab.
