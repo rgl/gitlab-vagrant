@@ -20,7 +20,6 @@ function gitlab-api {
     local method=$1; shift
     local path=$1; shift
     http \
-        --check-status \
         --ignore-stdin \
         $method \
         "https://$domain/api/v4$path" \
@@ -53,15 +52,15 @@ function gitlab-wait-for-ready {
 function gitlab-create-group {
     local name=$1
 
-    local group="$(gitlab-api GET "/groups/$name?with_projects=false")"
+    local group="$(gitlab-api GET "/groups/$name?with_projects=false" --check-status)"
     local id="$(echo "$group" | jq -r .id)"
 
-    [ "$id" != 'null' ] && echo "$group" || gitlab-api POST /groups name=$name path=$name visibility=public
+    [ "$id" != 'null' ] && echo "$group" || gitlab-api POST /groups name=$name path=$name visibility=public --check-status
 }
 
 # see https://docs.gitlab.com/ce/api/groups.html#list-groups
 function gitlab-get-groups {
-    gitlab-api GET /groups
+    gitlab-api GET /groups --check-status
 }
 
 # see https://docs.gitlab.com/ce/api/members.html#add-a-member-to-a-group-or-project
@@ -72,7 +71,8 @@ function gitlab-add-user-to-all-groups {
     for id in $(gitlab-get-groups | jq '.[].id'); do
         gitlab-api POST "/groups/$id/members" \
             "user_id=$user_id" \
-            "access_level=$access_level"
+            "access_level=$access_level" \
+            --check-status
     done
 }
 
@@ -104,7 +104,7 @@ function gitlab-create-project-and-import {
     local sourceGitUrl=$1
     local destinationProjectName=$2
     local destinationNamespaceId=$3
-    local destinationNamespaceFullPath="$(gitlab-api GET /namespaces/$destinationNamespaceId | jq -r .full_path)"
+    local destinationNamespaceFullPath="$(gitlab-api GET /namespaces/$destinationNamespaceId --check-status | jq -r .full_path)"
 
     gitlab-create-project $destinationProjectName $destinationNamespaceId
 
@@ -134,7 +134,8 @@ function gitlab-create-user {
         "name=$name" \
         "email=$email" \
         "password=$password" \
-        skip_confirmation=true
+        skip_confirmation=true \
+        --check-status
 }
 
 # see https://docs.gitlab.com/ce/api/users.html#for-normal-users
@@ -142,7 +143,8 @@ function gitlab-get-user {
     local username=$1
 
     gitlab-api GET /users \
-        "username=$username"
+        "username=$username" \
+        --check-status
 }
 
 # see https://docs.gitlab.com/ce/api/users.html#create-an-impersonation-token
@@ -177,7 +179,7 @@ function gitlab-create-user-impersonation-token {
 # generate a new ssh key for the current user account and add it to gitlab.
 if [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen -f ~/.ssh/id_rsa -t rsa -b 2048 -C "$USER@$domain" -N ''
-    gitlab-api POST /user/keys "title=$USER@$domain" key=@~/.ssh/id_rsa.pub
+    gitlab-api POST /user/keys "title=$USER@$domain" key=@~/.ssh/id_rsa.pub --check-status
 fi
 
 # trust our own SSH server.

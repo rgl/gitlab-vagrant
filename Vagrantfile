@@ -30,4 +30,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provision.sh", args: [gitlab_version]
   config.vm.provision "shell", path: "provision-gitlab-source-link-proxy.sh"
   config.vm.provision "shell", path: "provision-gitlab-cli.sh"
+  config.vm.provision "shell", path: "provision-examples.sh"
+  config.vm.provision "shell", path: "summary.sh"
 end

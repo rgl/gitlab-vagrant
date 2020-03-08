@@ -136,13 +136,13 @@ apt-get install -y jq
 source /vagrant/_include_gitlab_api.sh
 
 # disable user signup.
-gitlab-api PUT /application/settings signup_enabled:=false
+gitlab-api PUT /application/settings signup_enabled:=false --check-status
 
 # enable prometheus metrics.
 # see https://gitlab.example.com/help/administration/monitoring/prometheus/gitlab_metrics#gitlab-prometheus-metrics
 # see https://docs.gitlab.com/ce/api/settings.html
 sed -i -E "s,^(\s*#\s*)?(prometheus\['listen_address'\]).+,\2 = '0.0.0.0:9090'," /etc/gitlab/gitlab.rb
-gitlab-api PUT /application/settings prometheus_metrics_enabled:=true
+gitlab-api PUT /application/settings prometheus_metrics_enabled:=true --check-status
 gitlab-ctl reconfigure
 gitlab-wait-for-ready
 
@@ -169,31 +169,3 @@ File.write(
     Gitlab::CurrentSettings.current_application_settings.runners_registration_token)
 EOF
 popd
-
-# create some example users.
-bash /vagrant/create-example-users.sh
-
-# create some example repositories.
-bash /vagrant/create-example-repositories.sh
-
-# configure the jenkins-to-gitlab integration.
-bash /vagrant/create-example-jenkins-to-gitlab-configuration.sh
-
-# see the gitlab services status.
-gitlab-ctl status
-
-# show the gitlab environment info.
-gitlab-rake gitlab:env:info
-
-# show software versions.
-dpkg-query --showformat '${Package} ${Version}\n' --show gitlab-ce
-/opt/gitlab/embedded/bin/git --version
-/opt/gitlab/embedded/bin/ruby -v
-gitlab-rails --version
-gitlab-psql --version
-/opt/gitlab/embedded/bin/redis-server --version
-/opt/gitlab/embedded/sbin/nginx -v
-
-# show GitLab address and root credentials.
-echo "GitLab is running at https://$domain"
-echo 'Sign in with the root user and the password password'

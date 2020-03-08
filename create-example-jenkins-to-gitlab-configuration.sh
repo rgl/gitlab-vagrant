@@ -17,4 +17,4 @@ token_json="$(gitlab-create-user-impersonation-token "$user_id" 'jenkins' '["api
 echo "$token_json" | jq -j '.token' >/vagrant/tmp/gitlab-jenkins-impersonation-token.txt
 
 # allow requests to the local network from hooks and services.
-gitlab-api PUT /application/settings allow_local_requests_from_hooks_and_services:=true
+gitlab-api PUT /application/settings allow_local_requests_from_hooks_and_services:=true --check-status

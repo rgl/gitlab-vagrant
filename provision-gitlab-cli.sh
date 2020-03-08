@@ -24,7 +24,3 @@ private_token = $(cat /vagrant/tmp/gitlab-root-personal-access-token.txt)
 api_version = 4
 EOF
 chmod 600 ~/.python-gitlab.cfg
-
-# list projects.
-echo 'GitLab projects:'
-gitlab -o yaml -f id,web_url project list --all
