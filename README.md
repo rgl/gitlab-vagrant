@@ -177,9 +177,13 @@ gitlab -o json -f id,visibility,tag_list,web_url project list --all >projects.js
 jq '.[].id' projects.json | xargs -L1 gitlab project-protected-branch list --all --project-id
 jq '.[].id' projects.json | xargs -L1 gitlab project-protected-tag list --all --project-id
 jq '.[].id' projects.json | xargs -L1 gitlab project-member list --all --project-id
+```
 
-# use the gitlab library from a python script.
-python3 <<'EOF'
+# Python Interface
+
+[python-gitlab](https://github.com/python-gitlab/python-gitlab) is also available as the `gitlab` python library, which can be used as:
+
+```python
 import gitlab
 
 gl = gitlab.Gitlab.from_config()
@@ -216,5 +220,6 @@ for project in gl.projects.list(all=True):
         print(project.web_url)
 
 # see more examples at https://python-gitlab.readthedocs.io/en/stable/api-objects.html
-EOF
 ```
+
+Also check the [set-example-groups-users.py](set-example-groups-users.py) script to see how you could add users to all groups.
