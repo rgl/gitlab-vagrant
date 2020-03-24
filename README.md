@@ -141,8 +141,15 @@ and [the documentation](https://git-lfs.github.com/).
 Watch the logs:
 
 ```bash
-sudo su
+sudo su -l
 tail -f /var/log/gitlab/gitlab-rails/*.log
+```
+
+Do a self-check:
+
+```bash
+sudo gitlab-rake --trace gitlab:env:info
+sudo gitlab-rake --trace gitlab:check SANITIZE=true
 ```
 
 

@@ -176,13 +176,38 @@ function gitlab-create-user-impersonation-token {
     set -x
 }
 
+# trust our own SSH server.
+if [ -z "$(ssh-keygen -F $domain 2>/dev/null)" ]; then
+    install -d -m 700 ~/.ssh
+    ssh-keyscan -H $domain >> ~/.ssh/known_hosts
+fi
+
 # generate a new ssh key for the current user account and add it to gitlab.
+# NB the public keys should end-up in /var/opt/gitlab/.ssh/authorized_keys.
+#    NB that happens asynchronously via a sidekick job, as such, it might
+#       not be immediately visible.
+# see https://docs.gitlab.com/ce/ssh/
+# see https://docs.gitlab.com/ce/administration/raketasks/maintenance.html#rebuild-authorized_keys-file
+# TODO consider switching to https://docs.gitlab.com/ce/administration/operations/fast_ssh_key_lookup.html
 if [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen -f ~/.ssh/id_rsa -t rsa -b 2048 -C "$USER@$domain" -N ''
     gitlab-api POST /user/keys "title=$USER@$domain" key=@~/.ssh/id_rsa.pub --check-status
-fi
 
-# trust our own SSH server.
-if [ -z "$(ssh-keygen -F $domain 2>/dev/null)" ]; then
-    ssh-keyscan -H $domain >> ~/.ssh/known_hosts
+    # force the update of the authorized_keys to workaround the
+    # bug introduced in 12.9.0.
+    # NB this also happens when adding the key in the UI.
+    # see https://gitlab.com/gitlab-org/gitlab/-/issues/212297
+    yes yes | gitlab-rake gitlab:shell:setup
+
+    # wait for the key to be asynchronously added to the authorized_keys file.
+    # NB this just checks whether the file length is above 500B and
+    #    assumes the ssh was successfully added, which is enough for
+    #    this use-case.
+    while [ "$(stat --printf="%s" /var/opt/gitlab/.ssh/authorized_keys)" -le 500 ]; do
+        sleep 5
+    done
+
+    # test the ssh connection.
+    # NB this will eventually show "Welcome to GitLab, @root!"
+    ssh -o BatchMode=yes -Tv git@$domain </dev/null
 fi
