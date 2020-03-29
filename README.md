@@ -21,6 +21,11 @@ Some example repositories are automatically installed, if you do not want that, 
 
 Email notifications are sent to a local [MailHog](https://github.com/mailhog/MailHog) SMTP server running at localhost:1025 and you can browse them at [http://gitlab.example.com:8025](http://gitlab.example.com:8025).
 
+Prometheus is available at http://gitlab.example.com:9090/.
+
+Grafana is available at https://gitlab.example.com/-/grafana.
+
+
 # Usage
 
 Install the [Ubuntu Base Box](https://github.com/rgl/ubuntu-vagrant).
@@ -159,9 +164,13 @@ By default Prometheus is configured to scrap the metric targets every 15 seconds
 
 You can see the current targets at:
 
-  http://gitlab.example.com:9090/targets
+    http://gitlab.example.com:9090/targets
 
 **WARNING** prometheus is configured to listen at `0.0.0.0`, you probably want to change this.
+
+You can also see the Grafana dashboards at:
+
+    https://gitlab.example.com/-/grafana
 
 
 # Command Line Interface
