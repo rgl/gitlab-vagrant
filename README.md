@@ -28,8 +28,6 @@ Grafana is available at https://gitlab.example.com/-/grafana.
 
 # Usage
 
-Install the [Ubuntu Base Box](https://github.com/rgl/ubuntu-vagrant).
-
 Start the environment:
 
     vagrant up
