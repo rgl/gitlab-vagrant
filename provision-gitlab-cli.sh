@@ -3,7 +3,7 @@ set -eux
 
 # install.
 apt-get install -y python3-pip
-pip3 install python-gitlab
+python3 -m pip install python-gitlab
 # NB on Windows, to trust the certificates in the Windows CA trust store
 #    you also need to pip3 install python-certifi-win32.
 
