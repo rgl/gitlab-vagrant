@@ -28,7 +28,7 @@ Grafana is available at https://gitlab.example.com/-/grafana.
 
 # Usage
 
-Install the [Ubuntu Base Box](https://github.com/rgl/ubuntu-vagrant).
+Install the [Ubuntu 20.04 Base Box](https://github.com/rgl/ubuntu-vagrant).
 
 Start the environment:
 
