@@ -2,6 +2,8 @@
 
 This [vagrant](https://www.vagrantup.com/) environment configures a basic [GitLab Community Edition](https://gitlab.com/gitlab-org/gitlab-foss) installation using the [Omnibus GitLab](https://gitlab.com/gitlab-org/omnibus-gitlab) package.
 
+After launching this environment, you can test GitLab CI by launching the [rgl/gitlab-ci-vagrant](https://github.com/rgl/gitlab-ci-vagrant) enironment.
+
 [Nginx](http://nginx.org/en/) ([HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) enabled) is configured with a self-signed certificate at:
 
 > https://gitlab.example.com/
