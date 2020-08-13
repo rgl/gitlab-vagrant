@@ -50,8 +50,14 @@ popd
 pushd /tmp
 gitlab-create-project gitlab-runner-environment-info $example_group_id
 git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info.git gitlab-runner-environment-info && cd gitlab-runner-environment-info
+# add a file with CR eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
+# add a file with LF eol terminators to see whether they are preserved.
+printf '1. This line ends with line feed (LF)\n2. This line ends with line feed (LF)\n3. This line ends with line feed (LF)\n' >lf-eol-terminators.md
+# add a file with CRLF eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This line ends with carriage return and line feed (CRLF)\r\n3. This line ends with carriage return and line feed (CRLF)\r\n' >crlf-eol-terminators.md
 # add a file with mixed eol terminators to see whether they are preserved.
-printf '1. This line ends with carriage return (CR)\r2. This line ends with new line (LF)\n3. This line ends with carriage return and newline (CRLF)\r\n' >mixed-eol-terminators.md
+printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
 info:
@@ -70,7 +76,7 @@ info:
     - env | sort
     - mount | sort
     - ps axuww
-    - file mixed-eol-terminators.md
+    - file *-eol-terminators.md
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
