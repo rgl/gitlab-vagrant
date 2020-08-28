@@ -34,7 +34,7 @@ Install the [Ubuntu 20.04 Base Box](https://github.com/rgl/ubuntu-vagrant).
 
 Start the environment:
 
-    vagrant up
+    vagrant up --no-destroy-on-error
 
 Configure your host system to resolve the `gitlab.example.com` domain to this vagrant environment IP address, e.g.:
 
