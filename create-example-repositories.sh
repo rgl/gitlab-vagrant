@@ -8,6 +8,7 @@ example_group_name='example'
 example_group_id="$(gitlab-create-group $example_group_name | jq -r .id)"
 
 # import some existing git repositories.
+gitlab-create-project-and-import https://github.com/rgl/gitlab-ci-validate-jwt.git gitlab-ci-validate-jwt $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/gitlab-vagrant.git gitlab-vagrant $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/ubuntu-vagrant.git ubuntu-vagrant $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/example-dotnet-source-link.git example-dotnet-source-link $example_group_id
