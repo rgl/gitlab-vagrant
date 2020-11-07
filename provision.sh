@@ -114,11 +114,12 @@ t = PersonalAccessToken.new({
     name: 'vagrant',
     scopes: ['api', 'read_user', 'sudo']})
 t.save!
-FileUtils.mkdir_p('/vagrant/tmp')
 File.write(
-    '/vagrant/tmp/gitlab-root-personal-access-token.txt',
+    '/tmp/gitlab-root-personal-access-token.txt',
     t.token)
 EOF
+mkdir -p /vagrant/tmp
+mv /tmp/gitlab-root-personal-access-token.txt /vagrant/tmp
 
 # set the gitlab sign in page title and description.
 # NB since gitlab 12.7 this can also be done with the appearance api.
@@ -165,7 +166,8 @@ cp /etc/ssl/private/$domain-crt.pem .
 openssl x509 -outform der -in $domain-crt.pem -out $domain-crt.der
 gitlab-rails console -e production <<'EOF'
 File.write(
-    '/vagrant/tmp/gitlab-runners-registration-token.txt',
+    '/tmp/gitlab-runners-registration-token.txt',
     Gitlab::CurrentSettings.current_application_settings.runners_registration_token)
 EOF
+mv /tmp/gitlab-runners-registration-token.txt /vagrant/tmp
 popd

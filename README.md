@@ -92,6 +92,41 @@ git push
 ```
 
 
+## Hyper-V
+
+Create the required virtual switches:
+
+```bash
+PowerShell -NoLogo -NoProfile -ExecutionPolicy Bypass <<'EOF'
+@(
+  @{Name='gitlab'; IpAddress='10.10.9.1'}
+) | ForEach-Object {
+  $switchName = $_.Name
+  $switchIpAddress = $_.IpAddress
+  $networkAdapterName = "vEthernet ($switchName)"
+  $networkAdapterIpAddress = $switchIpAddress
+  $networkAdapterIpPrefixLength = 24
+
+  # create the vSwitch.
+  New-VMSwitch -Name $switchName -SwitchType Internal | Out-Null
+
+  # assign it an host IP address.
+  $networkAdapter = Get-NetAdapter $networkAdapterName
+  $networkAdapter | New-NetIPAddress `
+      -IPAddress $networkAdapterIpAddress `
+      -PrefixLength $networkAdapterIpPrefixLength `
+      | Out-Null
+}
+
+# remove all virtual switches from the windows firewall.
+Set-NetFirewallProfile `
+    -DisabledInterfaceAliases (
+            Get-NetAdapter -name "vEthernet*" | Where-Object {$_.ifIndex}
+        ).InterfaceAlias
+EOF
+```
+
+
 # Git Large File Storage (LFS)
 
 You can also use Git Large File Storage (LFS). As this is an external Git plugin,
