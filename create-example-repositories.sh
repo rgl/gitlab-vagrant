@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -euxo pipefail
 
 source /vagrant/_include_gitlab_api.sh
 
@@ -47,10 +47,10 @@ git push
 popd
 
 # create a new repository with a .gitlab-ci.yml file to show
-# information about the gitlab-runner environment.
+# information about the ubuntu docker gitlab-runner environment.
 pushd /tmp
-gitlab-create-project gitlab-runner-environment-info $example_group_id
-git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info.git gitlab-runner-environment-info && cd gitlab-runner-environment-info
+gitlab-create-project gitlab-runner-environment-info-ubuntu-docker $example_group_id
+git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info-ubuntu-docker.git gitlab-runner-environment-info-ubuntu-docker && cd gitlab-runner-environment-info-ubuntu-docker
 # add a file with CR eol terminators to see whether they are preserved.
 printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
 # add a file with LF eol terminators to see whether they are preserved.
@@ -78,6 +78,90 @@ info:
     - mount | sort
     - ps axuww
     - file *-eol-terminators.md
+EOF
+git add * .gitlab-ci.yml
+git commit -m 'init'
+git push
+popd
+
+# create a new repository with a .gitlab-ci.yml file to show
+# information about the windows powershell gitlab-runner environment.
+pushd /tmp
+gitlab-create-project gitlab-runner-environment-info-windows-ps $example_group_id
+git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info-windows-ps.git gitlab-runner-environment-info-windows-ps && cd gitlab-runner-environment-info-windows-ps
+# add a file with CR eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
+# add a file with LF eol terminators to see whether they are preserved.
+printf '1. This line ends with line feed (LF)\n2. This line ends with line feed (LF)\n3. This line ends with line feed (LF)\n' >lf-eol-terminators.md
+# add a file with CRLF eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This line ends with carriage return and line feed (CRLF)\r\n3. This line ends with carriage return and line feed (CRLF)\r\n' >crlf-eol-terminators.md
+# add a file with mixed eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
+# add the .gitlab-ci.yml file.
+cat >.gitlab-ci.yml <<'EOF'
+info:
+  stage: test
+  tags:
+    - windows
+    - powershell
+  script:
+    - |
+        $FormatEnumerationLimit = -1
+        function Write-Title($title) {
+          Write-Output "#`n# $title`n#"
+        }
+    - |
+        Write-Title 'Current user permissions'
+        whoami.exe /all
+    - |
+        Write-Title 'Environment Variables'
+        dir env: `
+          | Sort-Object -Property Name `
+          | Format-Table -AutoSize `
+          | Out-String -Stream -Width ([int]::MaxValue) `
+          | ForEach-Object {$_.TrimEnd()}
+EOF
+git add * .gitlab-ci.yml
+git commit -m 'init'
+git push
+popd
+
+# create a new repository with a .gitlab-ci.yml file to show
+# information about the windows docker gitlab-runner environment.
+pushd /tmp
+gitlab-create-project gitlab-runner-environment-info-windows-docker $example_group_id
+git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info-windows-docker.git gitlab-runner-environment-info-windows-docker && cd gitlab-runner-environment-info-windows-docker
+# add a file with CR eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
+# add a file with LF eol terminators to see whether they are preserved.
+printf '1. This line ends with line feed (LF)\n2. This line ends with line feed (LF)\n3. This line ends with line feed (LF)\n' >lf-eol-terminators.md
+# add a file with CRLF eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This line ends with carriage return and line feed (CRLF)\r\n3. This line ends with carriage return and line feed (CRLF)\r\n' >crlf-eol-terminators.md
+# add a file with mixed eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
+# add the .gitlab-ci.yml file.
+cat >.gitlab-ci.yml <<'EOF'
+info:
+  stage: test
+  tags:
+    - windows
+    - docker
+  script:
+    - |
+        $FormatEnumerationLimit = -1
+        function Write-Title($title) {
+          Write-Output "#`n# $title`n#"
+        }
+    - |
+        Write-Title 'Current user permissions'
+        whoami.exe /all
+    - |
+        Write-Title 'Environment Variables'
+        dir env: `
+          | Sort-Object -Property Name `
+          | Format-Table -AutoSize `
+          | Out-String -Stream -Width ([int]::MaxValue) `
+          | ForEach-Object {$_.TrimEnd()}
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
