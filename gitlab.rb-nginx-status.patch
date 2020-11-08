@@ -1,7 +1,7 @@
---- /etc/gitlab/gitlab.rb.orig	2018-12-22 17:31:25.599644518 +0000
-+++ /etc/gitlab/gitlab.rb	2018-12-22 17:43:04.115252738 +0000
-@@ -1041,20 +1041,20 @@
- # nginx['server_names_hash_bucket_size'] = 64
+--- gitlab.rb.orig	2020-11-08 15:47:07.886114149 +0000
++++ gitlab.rb	2020-11-08 16:01:08.737971127 +0000
+@@ -1353,19 +1353,19 @@
+ # nginx['request_buffering_off_path_regex'] = "/api/v\\d/jobs/\\d+/artifacts$|\\.git/git-receive-pack$|\\.git/gitlab-lfs/objects|\\.git/info/lfs/objects/batch$"
  
  ### Nginx status
 -# nginx['status'] = {
@@ -11,7 +11,6 @@
 -#  "port" => 9999,
 -#  "vts_enable" => true,
 -#  "options" => {
--#    "stub_status" => "on", # Turn on stats
 -#    "server_tokens" => "off", # Don't show the version of NGINX
 -#    "access_log" => "off", # Disable logs for stats
 -#    "allow" => "127.0.0.1", # Only allow access from localhost
@@ -25,7 +24,6 @@
 +  "port" => 8060,
 +  "vts_enable" => true,
 +  "options" => {
-+    "stub_status" => "on", # Turn on stats
 +    "server_tokens" => "off", # Don't show the version of NGINX
 +    "access_log" => "off", # Disable logs for stats
 +    "allow" => "127.0.0.1", # Only allow access from localhost
