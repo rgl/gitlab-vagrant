@@ -71,7 +71,7 @@ info:
     - cat /etc/os-release
     - uname -a
     - dpkg-query -W -f='${binary:Package}\n' | sort
-    - apt-get update && apt-get install -y file
+    - apt-get update && apt-get install -y file procps
     - id
     - pwd
     - env | sort
