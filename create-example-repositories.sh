@@ -14,6 +14,7 @@ gitlab-create-project-and-import https://github.com/rgl/ubuntu-vagrant.git ubunt
 gitlab-create-project-and-import https://github.com/rgl/example-dotnet-source-link.git example-dotnet-source-link $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/MailBounceDetector.git MailBounceDetector $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/HelloSeleniumWebDriver.git HelloSeleniumWebDriver $example_group_id
+gitlab-create-project-and-import https://github.com/rgl/hello-puppeteer-windows-container.git hello-puppeteer-windows-container $example_group_id
 
 # configure the git client.
 git config --global user.name "Root Doe"
