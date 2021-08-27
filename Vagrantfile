@@ -1,7 +1,7 @@
 # to be able to configure the hyper-v vm.
 ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 
-gitlab_version = '14.1.2-ce.0' # NB execute apt-cache madison gitlab-ce to known the available versions.
+gitlab_version = '14.2.1-ce.0' # NB execute apt-cache madison gitlab-ce to known the available versions.
 gitlab_ip = '10.10.9.99'
 
 Vagrant.configure(2) do |config|
