@@ -152,6 +152,10 @@ gitlab-api PUT /application/settings max_artifacts_size:=1024 --check-status --p
 # NB all artifacts will be erased after they expire.
 gitlab-api PUT /application/settings keep_latest_artifact:=false --check-status --print ''
 
+# set default artifacts expiration to 3d (default is 30d; gitlab.com default is 30d).
+# see https://gitlab.example.com/help/user/admin_area/settings/continuous_integration#default-artifacts-expiration
+gitlab-api PUT /application/settings default_artifacts_expire_in=3d --check-status --print ''
+
 # enable prometheus metrics.
 # see https://gitlab.example.com/help/administration/monitoring/prometheus/gitlab_metrics#gitlab-prometheus-metrics
 # see https://docs.gitlab.com/ce/api/settings.html
