@@ -132,12 +132,21 @@ a.description = 'Sign in on the right or [explore the public projects](/explore/
 a.save!
 EOF
 
-# include the gitlab api functions. 
+# include the gitlab api functions.
 apt-get install -y jq
 source /vagrant/_include_gitlab_api.sh
 
 # disable user signup.
 gitlab-api PUT /application/settings signup_enabled:=false --check-status
+
+# set the maximum artifacts size to 1 GB (default is 100 MB; gitlab.com default is 1 GB).
+# NB this can be set at the instance level (like in this example), at group level, and project level.
+# NB this can also be set in the UI at Admin Area | CI/CD | Continuous Integration and Deployment | Maximum artifacts size (MB).
+# see https://docs.gitlab.com/ce/api/settings.html
+# see https://gitlab.example.com/admin/application_settings/ci_cd
+# see https://gitlab.example.com/help/user/admin_area/settings/continuous_integration#maximum-artifacts-size
+# see https://gitlab.example.com/help/user/gitlab_com/index.md#gitlab-cicd
+gitlab-api PUT /application/settings max_artifacts_size:=1024 --check-status --print ''
 
 # enable prometheus metrics.
 # see https://gitlab.example.com/help/administration/monitoring/prometheus/gitlab_metrics#gitlab-prometheus-metrics
