@@ -148,6 +148,10 @@ gitlab-api PUT /application/settings signup_enabled:=false --check-status
 # see https://gitlab.example.com/help/user/gitlab_com/index.md#gitlab-cicd
 gitlab-api PUT /application/settings max_artifacts_size:=1024 --check-status --print ''
 
+# do not keep the latest artifacts for all jobs in the latest successful pipelines.
+# NB all artifacts will be erased after they expire.
+gitlab-api PUT /application/settings keep_latest_artifact:=false --check-status --print ''
+
 # enable prometheus metrics.
 # see https://gitlab.example.com/help/administration/monitoring/prometheus/gitlab_metrics#gitlab-prometheus-metrics
 # see https://docs.gitlab.com/ce/api/settings.html
