@@ -156,6 +156,10 @@ gitlab-api PUT /application/settings keep_latest_artifact:=false --check-status 
 # see https://gitlab.example.com/help/user/admin_area/settings/continuous_integration#default-artifacts-expiration
 gitlab-api PUT /application/settings default_artifacts_expire_in=3d --check-status --print ''
 
+# archive the jobs after 3d (default is to never archive them; gitlab.com default is 3mo).
+# see https://gitlab.example.com/help/user/admin_area/settings/continuous_integration#archive-jobs
+gitlab-api PUT /application/settings archive_builds_in_human_readable=3d --check-status --print ''
+
 # enable prometheus metrics.
 # see https://gitlab.example.com/help/administration/monitoring/prometheus/gitlab_metrics#gitlab-prometheus-metrics
 # see https://docs.gitlab.com/ce/api/settings.html
