@@ -2,7 +2,7 @@
 
 This [vagrant](https://www.vagrantup.com/) environment configures a basic [GitLab Community Edition](https://gitlab.com/gitlab-org/gitlab-foss) installation using the [Omnibus GitLab](https://gitlab.com/gitlab-org/omnibus-gitlab) package.
 
-After launching this environment, you can test GitLab CI by launching the [rgl/gitlab-ci-vagrant](https://github.com/rgl/gitlab-ci-vagrant) enironment.
+After launching this environment, you can test GitLab CI by launching the [rgl/gitlab-ci-vagrant](https://github.com/rgl/gitlab-ci-vagrant) environment.
 
 [Nginx](http://nginx.org/en/) ([HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) enabled) is configured with a self-signed certificate at:
 
@@ -214,7 +214,7 @@ You can also see the Grafana dashboards at:
 
 # Command Line Interface
 
-GitLab has an [API](https://docs.gitlab.com/ce/api/README.html) which can be used from different applications, one of those, is the [`gitlab` cli application](https://python-gitlab.readthedocs.io/en/stable/cli.html), which is already installed in the vagrant environment (see [provision-gitlab-cli.sh](provision-gitlab-cli.sh)) and can be used as:
+GitLab has an [API](https://docs.gitlab.com/ee/api/index.html) which can be used from different applications, one of those, is the [`gitlab` cli application](https://python-gitlab.readthedocs.io/en/stable/cli-usage.html), which is already installed in the vagrant environment (see [provision-gitlab-cli.sh](provision-gitlab-cli.sh)) and can be used as:
 
 ```bash
 vagrant ssh
