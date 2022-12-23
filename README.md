@@ -44,7 +44,7 @@ Configure your host system to resolve the `gitlab.example.com` domain to this va
 echo '10.10.9.99 gitlab.example.com' | sudo tee -a /etc/hosts
 ```
 
-Sign In into GitLab using the `root` username and the `password` password at:
+Sign In into GitLab using the `root` username and the `HeyH0Password` password at:
 
 > https://gitlab.example.com/users/sign_in
 
@@ -142,7 +142,7 @@ Give it a try by cloning the example repository (created by
 [create-example-repositories.sh](create-example-repositories.sh)):
 
 ```sh
-git clone https://root:password@gitlab.example.com/example/use-git-lfs.git
+git clone https://root:HeyH0Password@gitlab.example.com/example/use-git-lfs.git
 ```
 
 **NB** `git-lfs` always uses an `https` endpoint (even when you clone with `ssh`).

@@ -8,7 +8,7 @@ username='jenkins'
 name='Jenkins'
 
 # create and add the jenkins user as a Developer member to all groups.
-user_json="$(gitlab-create-user "$username" "$name" "$username@$email_domain" password)"
+user_json="$(gitlab-create-user "$username" "$name" "$username@$email_domain" HeyH0Password)"
 user_id="$(echo "$user_json" | jq '.id')"
 gitlab-add-user-to-all-groups "$user_id" '30' # 30 => Developer
 

@@ -37,7 +37,7 @@ sudo apt-get install -y git-lfs
 pushd /tmp
 gitlab-create-project use-git-lfs $example_group_id
 export GIT_SSL_NO_VERIFY=true
-git clone https://root:password@$domain/$example_group_name/use-git-lfs.git use-git-lfs && cd use-git-lfs
+git clone https://root:HeyH0Password@$domain/$example_group_name/use-git-lfs.git use-git-lfs && cd use-git-lfs
 git lfs install
 git lfs track '*.md'
 echo 'This file is in lfs' >in-lfs.md
@@ -52,7 +52,7 @@ popd
 # information about the ubuntu docker gitlab-runner environment.
 pushd /tmp
 gitlab-create-project gitlab-runner-environment-info-ubuntu-docker $example_group_id
-git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info-ubuntu-docker.git gitlab-runner-environment-info-ubuntu-docker && cd gitlab-runner-environment-info-ubuntu-docker
+git clone https://root:HeyH0Password@$domain/$example_group_name/gitlab-runner-environment-info-ubuntu-docker.git gitlab-runner-environment-info-ubuntu-docker && cd gitlab-runner-environment-info-ubuntu-docker
 # add a file with CR eol terminators to see whether they are preserved.
 printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
 # add a file with LF eol terminators to see whether they are preserved.
@@ -90,7 +90,7 @@ popd
 # information about the k8s gitlab-runner environment.
 pushd /tmp
 gitlab-create-project gitlab-runner-environment-info-k8s $example_group_id
-git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info-k8s.git gitlab-runner-environment-info-k8s && cd gitlab-runner-environment-info-k8s
+git clone https://root:HeyH0Password@$domain/$example_group_name/gitlab-runner-environment-info-k8s.git gitlab-runner-environment-info-k8s && cd gitlab-runner-environment-info-k8s
 # add a file with CR eol terminators to see whether they are preserved.
 printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
 # add a file with LF eol terminators to see whether they are preserved.
@@ -127,7 +127,7 @@ popd
 # information about the windows powershell gitlab-runner environment.
 pushd /tmp
 gitlab-create-project gitlab-runner-environment-info-windows-ps $example_group_id
-git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info-windows-ps.git gitlab-runner-environment-info-windows-ps && cd gitlab-runner-environment-info-windows-ps
+git clone https://root:HeyH0Password@$domain/$example_group_name/gitlab-runner-environment-info-windows-ps.git gitlab-runner-environment-info-windows-ps && cd gitlab-runner-environment-info-windows-ps
 # add a file with CR eol terminators to see whether they are preserved.
 printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
 # add a file with LF eol terminators to see whether they are preserved.
@@ -169,7 +169,7 @@ popd
 # information about the windows docker gitlab-runner environment.
 pushd /tmp
 gitlab-create-project gitlab-runner-environment-info-windows-docker $example_group_id
-git clone https://root:password@$domain/$example_group_name/gitlab-runner-environment-info-windows-docker.git gitlab-runner-environment-info-windows-docker && cd gitlab-runner-environment-info-windows-docker
+git clone https://root:HeyH0Password@$domain/$example_group_name/gitlab-runner-environment-info-windows-docker.git gitlab-runner-environment-info-windows-docker && cd gitlab-runner-environment-info-windows-docker
 # add a file with CR eol terminators to see whether they are preserved.
 printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
 # add a file with LF eol terminators to see whether they are preserved.

@@ -19,5 +19,5 @@ for user in "${users[@]}"; do
     username="$(echo "$user" | perl -n -e '/(.+?)\s+(.+)/ && print $1')"
     name="$(echo "$user" | perl -n -e '/(.+?)\s+(.+)/ && print $2')"
 
-    gitlab-create-user "$username" "$name" "$username@$email_domain" password
+    gitlab-create-user "$username" "$name" "$username@$email_domain" HeyH0Password
 done
