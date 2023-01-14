@@ -60,7 +60,7 @@ Vagrant.configure(2) do |config|
           'configure-hyperv-vm.ps1',
           machine.id,
           bridges.to_json
-        )
+        ) or raise "failed to configure hyper-v vm with exit code #{$?.exitstatus}"
       end
     end
   end
