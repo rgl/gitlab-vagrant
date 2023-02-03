@@ -3,7 +3,7 @@ ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 
 # NB execute apt-cache madison gitlab-ce to known the available versions.
 #    also see https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-gitlab_version = '15.8.0-ce.0'
+gitlab_version = '15.8.1-ce.0'
 gitlab_ip = '10.10.9.99'
 
 Vagrant.configure(2) do |config|
