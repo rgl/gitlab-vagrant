@@ -5,6 +5,7 @@ ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 #    also see https://gitlab.com/gitlab-org/gitlab-foss/-/tags
 GITLAB_VERSION = '15.10.3-ce.0'
 GITLAB_IP = '10.10.9.99'
+DISK_SIZE_GB = 32
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu-22.04-amd64"
@@ -18,6 +19,7 @@ Vagrant.configure(2) do |config|
     lv.cpus = 4
     lv.cpu_mode = 'host-passthrough'
     lv.keymap = 'pt'
+    lv.machine_virtual_size = DISK_SIZE_GB
     config.vm.synced_folder '.', '/vagrant', type: 'nfs', nfs_version: '4.2', nfs_udp: false
   end
 
@@ -71,6 +73,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", inline: "apt-get update"
+  config.vm.provision "shell", path: "provision-resize-disk.sh"
   config.vm.provision "shell", path: "configure-hyperv-guest.sh", args: [GITLAB_IP]
   config.vm.provision "shell", path: "provision-dns-server.sh", args: [GITLAB_IP]
   config.vm.provision "shell", path: "provision-mailhog.sh"
