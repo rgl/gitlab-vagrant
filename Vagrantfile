@@ -3,15 +3,15 @@ ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 
 # NB execute apt-cache madison gitlab-ce to known the available versions.
 #    also see https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-gitlab_version = '15.10.0-ce.0'
-gitlab_ip = '10.10.9.99'
+GITLAB_VERSION = '15.10.3-ce.0'
+GITLAB_IP = '10.10.9.99'
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu-22.04-amd64"
 
   config.vm.hostname = "gitlab.example.com"
 
-  config.vm.network "private_network", ip: gitlab_ip, libvirt__forward_mode: 'route', libvirt__dhcp_enabled: false, hyperv__bridge: 'gitlab'
+  config.vm.network "private_network", ip: GITLAB_IP, libvirt__forward_mode: 'route', libvirt__dhcp_enabled: false, hyperv__bridge: 'gitlab'
 
   config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 4*1024
@@ -71,10 +71,10 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", inline: "apt-get update"
-  config.vm.provision "shell", path: "configure-hyperv-guest.sh", args: [gitlab_ip]
-  config.vm.provision "shell", path: "provision-dns-server.sh", args: [gitlab_ip]
+  config.vm.provision "shell", path: "configure-hyperv-guest.sh", args: [GITLAB_IP]
+  config.vm.provision "shell", path: "provision-dns-server.sh", args: [GITLAB_IP]
   config.vm.provision "shell", path: "provision-mailhog.sh"
-  config.vm.provision "shell", path: "provision.sh", args: [gitlab_version]
+  config.vm.provision "shell", path: "provision.sh", args: [GITLAB_VERSION]
   config.vm.provision "shell", path: "provision-gitlab-source-link-proxy.sh"
   config.vm.provision "shell", path: "provision-gitlab-cli.sh"
   config.vm.provision "shell", path: "provision-examples.sh"
