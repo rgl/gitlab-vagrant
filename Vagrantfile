@@ -3,7 +3,7 @@ ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 
 # NB execute apt-cache madison gitlab-ce to known the available versions.
 #    also see https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-GITLAB_VERSION = '15.10.3-ce.0'
+GITLAB_VERSION = '15.11.1-ce.0'
 GITLAB_IP = '10.10.9.99'
 DISK_SIZE_GB = 32
 
