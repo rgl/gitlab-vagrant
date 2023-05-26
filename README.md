@@ -25,8 +25,6 @@ Email notifications are sent to a local [MailHog](https://github.com/mailhog/Mai
 
 Prometheus is available at http://gitlab.example.com:9090/.
 
-Grafana is available at https://gitlab.example.com/-/grafana.
-
 
 # Usage
 
@@ -206,10 +204,6 @@ You can see the current targets at:
     http://gitlab.example.com:9090/targets
 
 **WARNING** prometheus is configured to listen at `0.0.0.0`, you probably want to change this.
-
-You can also see the Grafana dashboards at:
-
-    https://gitlab.example.com/-/grafana
 
 
 # Command Line Interface
