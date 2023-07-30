@@ -11,11 +11,11 @@ users_role = {
 }
 
 access_levels = {
-    'Guest':        gitlab.GUEST_ACCESS,
-    'Reporter':     gitlab.REPORTER_ACCESS,
-    'Developer':    gitlab.DEVELOPER_ACCESS,
-    'Maintainer':   gitlab.MAINTAINER_ACCESS,
-    'Owner':        gitlab.OWNER_ACCESS,
+    'Guest':        gitlab.const.AccessLevel.GUEST,
+    'Reporter':     gitlab.const.AccessLevel.REPORTER,
+    'Developer':    gitlab.const.AccessLevel.DEVELOPER,
+    'Maintainer':   gitlab.const.AccessLevel.MAINTAINER,
+    'Owner':        gitlab.const.AccessLevel.OWNER,
 }
 access_level_names = {v: k for k, v in access_levels.items()}
 
