@@ -20,7 +20,7 @@ gitlab-psql --version
 
 # list projects using the gitlab-cli tool.
 echo 'GitLab projects:'
-gitlab -o yaml -f id,web_url project list --all
+gitlab -o yaml -f id,web_url project list --get-all
 
 # try the source-link-proxy.
 http -v --check-status --ignore-stdin \

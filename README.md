@@ -215,17 +215,17 @@ vagrant ssh
 sudo su -l
 
 # list all users.
-gitlab -o yaml -f id,name,email user list --all
+gitlab -o yaml -f id,name,email user list --get-all
 
 # list all groups and projects.
-gitlab -o yaml -f id,visibility,full_path,web_url group list --all
-gitlab -o yaml -f id,visibility,tag_list,path_with_namespace,web_url project list --all
+gitlab -o yaml -f id,visibility,full_path,web_url group list --get-all
+gitlab -o yaml -f id,visibility,tag_list,path_with_namespace,web_url project list --get-all
 
 # list all the projects protected branches, tags, members.
-gitlab -o json -f id,visibility,tag_list,web_url project list --all >projects.json
-jq '.[].id' projects.json | xargs -L1 gitlab project-protected-branch list --all --project-id
-jq '.[].id' projects.json | xargs -L1 gitlab project-protected-tag list --all --project-id
-jq '.[].id' projects.json | xargs -L1 gitlab project-member list --all --project-id
+gitlab -o json -f id,visibility,tag_list,web_url project list --get-all >projects.json
+jq '.[].id' projects.json | xargs -L1 gitlab project-protected-branch list --get-all --project-id
+jq '.[].id' projects.json | xargs -L1 gitlab project-protected-tag list --get-all --project-id
+jq '.[].id' projects.json | xargs -L1 gitlab project-member list --get-all --project-id
 ```
 
 # Python Interface
