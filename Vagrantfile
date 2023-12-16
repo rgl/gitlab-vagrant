@@ -23,12 +23,6 @@ Vagrant.configure(2) do |config|
     config.vm.synced_folder '.', '/vagrant', type: 'nfs', nfs_version: '4.2', nfs_udp: false
   end
 
-  config.vm.provider "virtualbox" do |vb|
-    vb.linked_clone = true
-    vb.memory = 4*1024
-    vb.cpus = 4
-  end
-
   config.vm.provider 'hyperv' do |hv, config|
     hv.linked_clone = true
     hv.memory = 4*1024
