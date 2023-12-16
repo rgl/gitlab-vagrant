@@ -409,9 +409,99 @@ info:
         | Format-Table -AutoSize `
         | Out-String -Stream -Width ([int]::MaxValue) `
         | ForEach-Object {$_.TrimEnd()}
+EOF
+git add * .gitlab-ci.yml
+git commit -m 'init'
+git push
+popd
+
+# create a new repository with a .gitlab-ci.yml file to test building a docker
+# image on the windows docker gitlab-runner environment.
+# NB as of docker 24.0.7, --chown does not work in windows containers.
+#    see https://github.com/rgl/windows-dockerfile-copy-with-chown-test
+#    see https://github.com/moby/moby/issues/35507
+#    see https://github.com/moby/moby/issues/41776
+pushd /tmp
+gitlab-create-project gitlab-runner-environment-build-windows-container-image $example_group_id
+git clone https://root:HeyH0Password@$domain/$example_group_name/gitlab-runner-environment-build-windows-container-image.git gitlab-runner-environment-build-windows-container-image && cd gitlab-runner-environment-build-windows-container-image
+# add a file with CR eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
+# add a file with LF eol terminators to see whether they are preserved.
+printf '1. This line ends with line feed (LF)\n2. This line ends with line feed (LF)\n3. This line ends with line feed (LF)\n' >lf-eol-terminators.md
+# add a file with CRLF eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This line ends with carriage return and line feed (CRLF)\r\n3. This line ends with carriage return and line feed (CRLF)\r\n' >crlf-eol-terminators.md
+# add a file with mixed eol terminators to see whether they are preserved.
+printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
+# add test script.
+cat >test.ps1 <<'EOF'
+function Write-Title($title) {
+    Write-Output "`n#`n# $title`n#`n"
+}
+
+Write-Title "chown-guests.txt"
+Get-Acl chown-guests.txt | Format-List
+
+Write-Title "chown-administrator.txt"
+Get-Acl chown-administrator.txt | Format-List
+
+Write-Title "chown-containeruser.txt"
+Get-Acl chown-containeruser.txt | Format-List
+EOF
+# add test files.
+echo 'Administrator' >chown-administrator.txt
+echo 'Guests' >chown-guests.txt
+echo 'ContainerUser' >chown-containeruser.txt
+# add Dockefile.
+cat >Dockerfile <<'EOF'
+# escape=`
+#FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
+FROM mcr.microsoft.com/powershell:7.2-nanoserver-ltsc2022
+ENTRYPOINT ["pwsh.exe", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue'; $FormatEnumerationLimit = -1; "]
+SHELL      ["pwsh.exe", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue'; $FormatEnumerationLimit = -1; "]
+RUN mkdir C:\test | Out-Null
+WORKDIR C:\test
+COPY test.ps1 ./
+COPY --chown=Guests chown-guests.txt ./
+COPY --chown=Administrator chown-administrator.txt ./
+COPY --chown=ContainerUser chown-containeruser.txt ./
+CMD ["./test.ps1"]
+EOF
+# add the .gitlab-ci.yml file.
+cat >.gitlab-ci.yml <<'EOF'
+default:
+  before_script:
+    # enable strict mode and fail the job when there is an unhandled exception.
     - |
-      Write-Title 'PowerShell Info'
-      $PSVersionTable
+      Set-StrictMode -Version Latest
+      $FormatEnumerationLimit = -1
+      $ErrorActionPreference = 'Stop'
+      $ProgressPreference = 'SilentlyContinue'
+      trap {
+        Write-Host "ERROR: $_"
+        ($_.ScriptStackTrace -split '\r?\n') -replace '^(.*)$','ERROR: $1' | Write-Host
+        ($_.Exception.ToString() -split '\r?\n') -replace '^(.*)$','ERROR EXCEPTION: $1' | Write-Host
+        Exit 1
+      }
+    # wrap the docker command (to make sure this script aborts when it fails).
+    - |
+      function docker {
+        docker.exe @Args | Out-String -Stream -Width ([int]::MaxValue)
+        if ($LASTEXITCODE) {
+          throw "$(@('docker')+$Args | ConvertTo-Json -Compress) failed with exit code $LASTEXITCODE"
+        }
+      }
+build:
+  tags:
+    - windows
+    - pwsh
+  script:
+    - |
+      docker info
+    - |
+      docker build --iidfile image-id.txt .
+      $imageId = Get-Content -Raw image-id.txt
+    - |
+      docker run --rm --tty $imageId
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
