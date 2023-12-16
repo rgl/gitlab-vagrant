@@ -62,6 +62,16 @@ printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This l
 printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
+default:
+  before_script:
+    # show the shell executable.
+    - echo "$SHELL"
+    # show the shell command line arguments.
+    - cat "/proc/$$/cmdline" | tr \\0 \\n
+    # enable the shell strict mode.
+    - set -euo pipefail
+    # show the shell options.
+    - set -o
 info:
   tags:
     - ubuntu
@@ -98,6 +108,16 @@ printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This l
 printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
+default:
+  before_script:
+    # show the shell executable.
+    - echo "$SHELL"
+    # show the shell command line arguments.
+    - cat "/proc/$$/cmdline" | tr \\0 \\n
+    # enable the shell strict mode.
+    - set -euo pipefail
+    # show the shell options.
+    - set -o
 info:
   tags:
     - ubuntu
@@ -135,6 +155,16 @@ printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This l
 printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
+default:
+  before_script:
+    # show the shell executable.
+    - echo "$SHELL"
+    # show the shell command line arguments.
+    - cat "/proc/$$/cmdline" | tr \\0 \\n
+    # enable the shell strict mode.
+    - set -euo pipefail
+    # show the shell options.
+    - set -o
 info:
   tags:
     - ubuntu
@@ -172,6 +202,16 @@ printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This l
 printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
+default:
+  before_script:
+    # show the shell executable.
+    - echo "$SHELL"
+    # show the shell command line arguments.
+    - cat "/proc/$$/cmdline" | tr \\0 \\n
+    # enable the shell strict mode.
+    - set -euo pipefail
+    # show the shell options.
+    - set -o
 info:
   tags:
     - k8s
