@@ -63,7 +63,6 @@ printf '1. This line ends with carriage return (CR)\r2. This line ends with line
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
 info:
-  stage: test
   tags:
     - ubuntu
     - shell
@@ -100,7 +99,6 @@ printf '1. This line ends with carriage return (CR)\r2. This line ends with line
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
 info:
-  stage: test
   tags:
     - ubuntu
     - docker
@@ -138,7 +136,6 @@ printf '1. This line ends with carriage return (CR)\r2. This line ends with line
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
 info:
-  stage: test
   tags:
     - ubuntu
     - lxd
@@ -176,7 +173,6 @@ printf '1. This line ends with carriage return (CR)\r2. This line ends with line
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
 info:
-  stage: test
   tags:
     - k8s
   script:
@@ -213,7 +209,6 @@ printf '1. This line ends with carriage return (CR)\r2. This line ends with line
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
 info:
-  stage: test
   tags:
     - windows
     - powershell
@@ -255,7 +250,6 @@ printf '1. This line ends with carriage return (CR)\r2. This line ends with line
 # add the .gitlab-ci.yml file.
 cat >.gitlab-ci.yml <<'EOF'
 info:
-  stage: test
   tags:
     - windows
     - docker
