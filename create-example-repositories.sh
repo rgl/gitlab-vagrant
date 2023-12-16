@@ -93,6 +93,7 @@ docker-info:
     - shell
   script:
     - docker info
+    - docker run --rm hello-world
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
@@ -193,6 +194,7 @@ docker-info:
     - lxd
   script:
     - docker info
+    - docker run --rm hello-world
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
@@ -293,6 +295,9 @@ docker-info:
     - |
       Write-Title 'Docker Info'
       docker info
+    - |
+      Write-Title 'Docker hello-world'
+      docker run --rm hello-world
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
@@ -360,6 +365,9 @@ docker-info:
     - |
       Write-Title 'Docker Info'
       docker info
+    - |
+      Write-Title 'Docker hello-world'
+      docker run --rm hello-world
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
