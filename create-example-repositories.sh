@@ -87,6 +87,12 @@ info:
     - mount | sort
     - ps axuww
     - file *-eol-terminators.md
+docker-info:
+  tags:
+    - ubuntu
+    - shell
+  script:
+    - docker info
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
@@ -181,6 +187,12 @@ info:
     - mount | sort
     - ps axuww
     - file *-eol-terminators.md
+docker-info:
+  tags:
+    - ubuntu
+    - lxd
+  script:
+    - docker info
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
@@ -273,6 +285,14 @@ info:
     - |
       Write-Title 'PowerShell Info'
       $PSVersionTable
+docker-info:
+  tags:
+    - windows
+    - powershell
+  script:
+    - |
+      Write-Title 'Docker Info'
+      docker info
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
@@ -301,6 +321,14 @@ default:
       function Write-Title($title) {
         Write-Output "#`n# $title`n#"
       }
+    # wrap the docker command (to make sure this script aborts when it fails).
+    - |
+      function docker {
+        docker.exe @Args | Out-String -Stream -Width ([int]::MaxValue)
+        if ($LASTEXITCODE) {
+          throw "$(@('docker')+$Args | ConvertTo-Json -Compress) failed with exit code $LASTEXITCODE"
+        }
+      }
 info:
   tags:
     - windows
@@ -324,6 +352,14 @@ info:
     - |
       Write-Title 'PowerShell Info'
       $PSVersionTable
+docker-info:
+  tags:
+    - windows
+    - pwsh
+  script:
+    - |
+      Write-Title 'Docker Info'
+      docker info
 EOF
 git add * .gitlab-ci.yml
 git commit -m 'init'
