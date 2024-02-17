@@ -2,14 +2,11 @@
 set -eux
 
 # download and install.
-artifact_url=https://github.com/mailhog/MailHog/releases/download/v1.0.1/MailHog_linux_amd64
-artifact_sha=e2ed634ded49929f089b20045581955ed217672078fd86082dd7a6c67c5d09c7
+# renovate: datasource=github-releases depName=mailhog/MailHog
+artifact_version='1.0.1'
+artifact_url=https://github.com/mailhog/MailHog/releases/download/v$artifact_version/MailHog_linux_amd64
 artifact_bin=/opt/mailhog/bin/MailHog
 wget -qO /tmp/MailHog $artifact_url
-if [ "$(sha256sum /tmp/MailHog | awk '{print $1}')" != "$artifact_sha" ]; then
-    echo "downloaded $artifact_url failed the checksum verification"
-    exit 1
-fi
 install -d /opt/mailhog/bin
 install -m 555 /tmp/MailHog /opt/mailhog/bin/MailHog
 /opt/mailhog/bin/MailHog --version

@@ -91,6 +91,12 @@ git commit -m 'some change'
 git push
 ```
 
+List this repository dependencies (and which have newer versions):
+
+```bash
+GITHUB_COM_TOKEN='YOUR_GITHUB_PERSONAL_TOKEN' ./renovate.sh
+```
+
 
 ## Hyper-V
 

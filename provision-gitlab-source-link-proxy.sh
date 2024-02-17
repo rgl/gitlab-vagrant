@@ -4,13 +4,10 @@ set -eux
 domain=$(hostname --fqdn)
 
 # download.
-artifact_url=https://github.com/rgl/gitlab-source-link-proxy/releases/download/v0.0.2/gitlab-source-link-proxy_0.0.2_linux_amd64.tar.gz
-artifact_sha=e0d8001feb5ca27cd56486bc103139a192e3e22f21e2ec5d34108637b9f9a133
+# renovate: datasource=github-releases depName=rgl/gitlab-source-link-proxy
+artifact_version='0.0.2'
+artifact_url=https://github.com/rgl/gitlab-source-link-proxy/releases/download/v${artifact_version}/gitlab-source-link-proxy_${artifact_version}_linux_amd64.tar.gz
 wget -qO /tmp/gitlab-source-link-proxy.tgz $artifact_url
-if [ "$(sha256sum /tmp/gitlab-source-link-proxy.tgz | awk '{print $1}')" != "$artifact_sha" ]; then
-    echo "downloaded $artifact_url failed the checksum verification"
-    exit 1
-fi
 
 # add the gitlab-source-link-proxy user.
 groupadd --system gitlab-source-link-proxy
