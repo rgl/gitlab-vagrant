@@ -186,10 +186,48 @@ find \
     >$domain.ssh_known_hosts
 cp /etc/ssl/private/$domain-crt.pem .
 openssl x509 -outform der -in $domain-crt.pem -out $domain-crt.der
-gitlab-rails runner -e production - <<'EOF'
-File.write(
-    '/tmp/gitlab-runners-registration-token.txt',
-    Gitlab::CurrentSettings.current_application_settings.runners_registration_token)
-EOF
-mv /tmp/gitlab-runners-registration-token.txt /vagrant/tmp
+rm -f gitlab-runner-authentication-token-*.json
+# register the ubuntu 22.04 shell runner.
+# see https://docs.gitlab.com/ee/api/runners.html#create-an-instance-runner
+# see https://docs.gitlab.com/ee/api/users.html#create-a-runner-linked-to-a-user
+# see https://docs.gitlab.com/runner/executors/shell.html
+gitlab-api POST /user/runners \
+    runner_type=instance_type \
+    tag_list='shell,linux,ubuntu,ubuntu-22.04' \
+    description='Shell / Ubuntu 22.04' \
+    --check-status \
+    >gitlab-runner-authentication-token-ubuntu-22.04-shell.json
+# register the ubuntu 22.04 docker runner.
+# see https://docs.gitlab.com/runner/executors/docker.html
+gitlab-api POST /user/runners \
+    runner_type=instance_type \
+    tag_list='docker,linux,ubuntu,ubuntu-22.04' \
+    description='Docker / Ubuntu 22.04' \
+    --check-status \
+    >gitlab-runner-authentication-token-ubuntu-22.04-docker.json
+# register the ubuntu 22.04 lxd runner.
+# see https://docs.gitlab.com/runner/executors/custom.html
+# see https://docs.gitlab.com/runner/executors/custom_examples/lxd.html
+gitlab-api POST /user/runners \
+    runner_type=instance_type \
+    tag_list='lxd,linux,ubuntu,ubuntu-22.04' \
+    description='LXD / Ubuntu 22.04' \
+    --check-status \
+    >gitlab-runner-authentication-token-ubuntu-22.04-lxd.json
+# register the windows 2022 shell runner.
+# see https://docs.gitlab.com/runner/executors/shell.html
+gitlab-api POST /user/runners \
+    runner_type=instance_type \
+    tag_list='pwsh,shell,vs2022,windows,windows-2022' \
+    description='Shell / Windows 2022' \
+    --check-status \
+    >gitlab-runner-authentication-token-windows-2022-shell.json
+# register the windows 2022 docker runner.
+# see https://docs.gitlab.com/runner/executors/docker.html
+gitlab-api POST /user/runners \
+    runner_type=instance_type \
+    tag_list='docker,windows,windows-2022' \
+    description='Docker / Windows 2022' \
+    --check-status \
+    >gitlab-runner-authentication-token-windows-2022-docker.json
 popd
