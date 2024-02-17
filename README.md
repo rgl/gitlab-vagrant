@@ -21,7 +21,7 @@ GitLab is also configured to use the optional `ldaps://dc.example.com` Active Di
 
 Some example repositories are automatically installed, if you do not want that, comment the line that calls [`create-example-repositories.sh`](create-example-repositories.sh) inside the [`provision.sh` file](provision.sh) before running `vagrant up`.
 
-Email notifications are sent to a local [MailHog](https://github.com/mailhog/MailHog) SMTP server running at localhost:1025 and you can browse them at [http://gitlab.example.com:8025](http://gitlab.example.com:8025).
+Email notifications are sent to a local [mailpit](https://github.com/axllent/mailpit) SMTP server running at localhost:1025 and you can browse them at [http://gitlab.example.com:8025](http://gitlab.example.com:8025).
 
 Prometheus is available at http://gitlab.example.com:9090/.
 
