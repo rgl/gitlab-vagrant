@@ -103,7 +103,7 @@ GITHUB_COM_TOKEN='YOUR_GITHUB_PERSONAL_TOKEN' ./renovate.sh
 Create the required virtual switches:
 
 ```bash
-PowerShell -NoLogo -NoProfile -ExecutionPolicy Bypass <<'EOF'
+pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass <<'EOF'
 @(
   @{Name='gitlab'; IpAddress='10.10.9.1'}
 ) | ForEach-Object {

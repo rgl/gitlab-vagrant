@@ -248,63 +248,6 @@ git push
 popd
 
 # create a new repository with a .gitlab-ci.yml file to show
-# information about the windows powershell gitlab-runner environment.
-pushd /tmp
-gitlab-create-project gitlab-runner-environment-info-windows-powershell $example_group_id
-git clone https://root:HeyH0Password@$domain/$example_group_name/gitlab-runner-environment-info-windows-powershell.git gitlab-runner-environment-info-windows-powershell && cd gitlab-runner-environment-info-windows-powershell
-# add a file with CR eol terminators to see whether they are preserved.
-printf '1. This line ends with carriage return (CR)\r2. This line ends with carriage return (CR)\r3. This line ends with carriage return (CR)\r' >cr-eol-terminators.md
-# add a file with LF eol terminators to see whether they are preserved.
-printf '1. This line ends with line feed (LF)\n2. This line ends with line feed (LF)\n3. This line ends with line feed (LF)\n' >lf-eol-terminators.md
-# add a file with CRLF eol terminators to see whether they are preserved.
-printf '1. This line ends with carriage return and line feed (CRLF)\r\n2. This line ends with carriage return and line feed (CRLF)\r\n3. This line ends with carriage return and line feed (CRLF)\r\n' >crlf-eol-terminators.md
-# add a file with mixed eol terminators to see whether they are preserved.
-printf '1. This line ends with carriage return (CR)\r2. This line ends with line feed (LF)\n3. This line ends with carriage return and line feed (CRLF)\r\n' >mixed-eol-terminators.md
-# add the .gitlab-ci.yml file.
-cat >.gitlab-ci.yml <<'EOF'
-default:
-  before_script:
-    - |
-      $FormatEnumerationLimit = -1
-      function Write-Title($title) {
-        Write-Output "#`n# $title`n#"
-      }
-info:
-  tags:
-    - windows
-    - powershell
-  script:
-    - |
-      Write-Title 'Current user permissions'
-      whoami.exe /all
-    - |
-      Write-Title 'Environment Variables'
-      dir env: `
-        | Sort-Object -Property Name `
-        | Format-Table -AutoSize `
-        | Out-String -Stream -Width ([int]::MaxValue) `
-        | ForEach-Object {$_.TrimEnd()}
-    - |
-      Write-Title 'PowerShell Info'
-      $PSVersionTable
-docker-info:
-  tags:
-    - windows
-    - powershell
-  script:
-    - |
-      Write-Title 'Docker Info'
-      docker info
-    - |
-      Write-Title 'Docker hello-world'
-      docker run --rm hello-world
-EOF
-git add * .gitlab-ci.yml
-git commit -m 'init'
-git push
-popd
-
-# create a new repository with a .gitlab-ci.yml file to show
 # information about the windows pwsh gitlab-runner environment.
 pushd /tmp
 gitlab-create-project gitlab-runner-environment-info-windows-pwsh $example_group_id
