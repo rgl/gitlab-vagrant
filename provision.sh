@@ -214,6 +214,14 @@ gitlab-api POST /user/runners \
     description='LXD / Ubuntu 22.04' \
     --check-status \
     >gitlab-runner-authentication-token-ubuntu-22.04-lxd.json
+# register the k3s k8s runner.
+# see https://docs.gitlab.com/runner/executors/kubernetes/index.html
+gitlab-api POST /user/runners \
+    runner_type=instance_type \
+    tag_list='k3s,k8s' \
+    description='K3S / Kubernetes' \
+    --check-status \
+    >gitlab-runner-authentication-token-kubernetes-k3s.json
 # register the windows 2022 shell runner.
 # see https://docs.gitlab.com/runner/executors/shell.html
 gitlab-api POST /user/runners \
