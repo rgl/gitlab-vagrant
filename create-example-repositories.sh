@@ -92,6 +92,7 @@ docker-info:
     - ubuntu
     - shell
   script:
+    - docker compose version
     - docker info
     - docker run --rm hello-world
 EOF
@@ -193,6 +194,7 @@ docker-info:
     - ubuntu
     - incus
   script:
+    - docker compose version
     - docker info
     - docker run --rm hello-world
 EOF
@@ -247,6 +249,7 @@ docker-info:
     - ubuntu
     - lxd
   script:
+    - docker compose version
     - docker info
     - docker run --rm hello-world
 EOF
@@ -359,6 +362,9 @@ docker-info:
     - windows
     - pwsh
   script:
+    - |
+      Write-Title 'Docker Compose Version'
+      docker compose version
     - |
       Write-Title 'Docker Info'
       docker info
@@ -492,6 +498,8 @@ build:
     - windows
     - pwsh
   script:
+    - |
+      docker compose version
     - |
       docker info
     - |
