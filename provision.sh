@@ -205,6 +205,15 @@ gitlab-api POST /user/runners \
     description='Docker / Ubuntu 22.04' \
     --check-status \
     >gitlab-runner-authentication-token-ubuntu-22.04-docker.json
+# register the ubuntu 22.04 incus runner.
+# see https://docs.gitlab.com/runner/executors/custom.html
+# see https://docs.gitlab.com/runner/executors/custom_examples/lxd.html
+gitlab-api POST /user/runners \
+    runner_type=instance_type \
+    tag_list='incus,linux,ubuntu,ubuntu-22.04' \
+    description='Incus / Ubuntu 22.04' \
+    --check-status \
+    >gitlab-runner-authentication-token-ubuntu-22.04-incus.json
 # register the ubuntu 22.04 lxd runner.
 # see https://docs.gitlab.com/runner/executors/custom.html
 # see https://docs.gitlab.com/runner/executors/custom_examples/lxd.html
