@@ -1,6 +1,6 @@
---- gitlab.rb.orig	2019-12-08 07:55:59.783820854 +0000
-+++ gitlab.rb	2019-12-08 08:06:59.658363989 +0000
-@@ -298,53 +298,36 @@
+--- gitlab.rb.orig	2024-03-22 08:43:51.808098072 +0000
++++ gitlab.rb	2024-03-22 08:49:58.698780373 +0000
+@@ -505,57 +505,36 @@
  ###! **Be careful not to break the indentation in the ldap_servers block. It is
  ###!   in yaml format and the spaces must be retained. Using tabs will not work.**
  
@@ -21,6 +21,8 @@
 -#     verify_certificates: true
 -#     smartcard_auth: false
 -#     active_directory: true
+-#     smartcard_ad_cert_field: 'altSecurityIdentities'
+-#     smartcard_ad_cert_format: null # 'issuer_and_serial_number', 'issuer_and_subject' , 'principal_name'
 -#     allow_username_or_email_login: false
 -#     lowercase_usernames: false
 -#     block_auto_created_users: false
@@ -42,6 +44,8 @@
 -#     verify_certificates: true
 -#     smartcard_auth: false
 -#     active_directory: true
+-#     smartcard_ad_cert_field: 'altSecurityIdentities'
+-#     smartcard_ad_cert_format: null # 'issuer_and_serial_number', 'issuer_and_subject' , 'principal_name'
 -#     allow_username_or_email_login: false
 -#     lowercase_usernames: false
 -#     block_auto_created_users: false
