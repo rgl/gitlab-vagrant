@@ -55,7 +55,7 @@ When using the default LDAP settings you can also login with LDAP credentials as
 
 After login, you should add your [public SSH key](https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key), for that open the SSH Keys page at:
 
-> https://gitlab.example.com/profile/keys
+> https://gitlab.example.com/-/user_settings/ssh_keys
 
 Add a new SSH key with your SSH public key, for that, just copy the contents of
 your `id_rsa.pub` file. Get its contents with, e.g.:
