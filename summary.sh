@@ -4,7 +4,7 @@ set -euxo pipefail
 domain=$(hostname --fqdn)
 
 # see the gitlab services status.
-gitlab-ctl status
+while ! gitlab-ctl status; do sleep 5; done
 
 # show the gitlab environment info.
 gitlab-rake gitlab:env:info

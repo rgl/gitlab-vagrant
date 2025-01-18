@@ -4,7 +4,7 @@ ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 # NB execute apt-cache madison gitlab-ce to list the available versions.
 # see https://gitlab.com/gitlab-org/gitlab-foss/-/tags
 # renovate: datasource=gitlab-tags depName=gitlab-org/gitlab-foss
-gitlab_version = '17.7.1'
+gitlab_version = '17.8.0'
 GITLAB_VERSION = "#{gitlab_version}-ce.0"
 GITLAB_IP = '10.10.9.99'
 DISK_SIZE_GB = 32
@@ -17,7 +17,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: GITLAB_IP, libvirt__forward_mode: 'route', libvirt__dhcp_enabled: false, hyperv__bridge: 'gitlab'
 
   config.vm.provider 'libvirt' do |lv, config|
-    lv.memory = 4*1024
+    lv.memory = 6*1024
     lv.cpus = 4
     lv.cpu_mode = 'host-passthrough'
     lv.keymap = 'pt'
@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider 'hyperv' do |hv, config|
     hv.linked_clone = true
-    hv.memory = 4*1024
+    hv.memory = 6*1024
     hv.cpus = 4
     hv.enable_virtualization_extensions = false # nested virtualization.
     hv.vlan_id = ENV['HYPERV_VLAN_ID']
