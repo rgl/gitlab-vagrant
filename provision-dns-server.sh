@@ -4,7 +4,7 @@ set -euxo pipefail
 config_gitlab_fqdn=$(hostname --fqdn)
 config_gitlab_ip=$1
 
-# provision a recursve DNS server as a workaround for being able to access
+# provision a recursive DNS server as a workaround for being able to access
 # our custom domain from a windows container.
 # see ../gitlab-ci-vagrant/windows/provision-gitlab-runner.ps1
 # see http://www.thekelleys.org.uk/dnsmasq/docs/setup.html
