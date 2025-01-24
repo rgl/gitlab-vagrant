@@ -11,10 +11,6 @@ function gitlab-psql {
 
 gitlab_private_token=$(cat /vagrant/tmp/gitlab-root-personal-access-token.txt)
 
-function git {
-    /opt/gitlab/embedded/bin/git "$@"
-}
-
 # see https://docs.gitlab.com/ce/api/README.html
 function gitlab-api {
     local method=$1; shift

@@ -41,41 +41,10 @@ wget -qO- https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/scri
 # install gitlab with the omnibus package.
 apt-get install -y --no-install-recommends "gitlab-ce=$gitlab_version"
 
-# create a self-signed certificate and add it to the global trusted list.
-pushd /etc/ssl/private
-openssl genrsa \
-    -out $domain-keypair.pem \
-    2048 \
-    2>/dev/null
-chmod 400 $domain-keypair.pem
-openssl req -new \
-    -sha256 \
-    -subj "/CN=$domain" \
-    -reqexts a \
-    -config <(cat /etc/ssl/openssl.cnf
-        echo "[a]
-        subjectAltName=DNS:$domain
-        ") \
-    -key $domain-keypair.pem \
-    -out $domain-csr.pem
-openssl x509 -req -sha256 \
-    -signkey $domain-keypair.pem \
-    -extensions a \
-    -extfile <(echo "[a]
-        subjectAltName=DNS:$domain
-        extendedKeyUsage=serverAuth
-        ") \
-    -days 365 \
-    -in  $domain-csr.pem \
-    -out $domain-crt.pem
-cp $domain-crt.pem /usr/local/share/ca-certificates/$domain.crt
-update-ca-certificates --verbose
-popd
-
-# configure gitlab to use it.
+# configure the gitlab certificate.
 install -m 700 -o root -g root -d /etc/gitlab/ssl
-ln -s /etc/ssl/private/$domain-keypair.pem /etc/gitlab/ssl/$domain.key
-ln -s /etc/ssl/private/$domain-crt.pem /etc/gitlab/ssl/$domain.crt
+ln -s "/etc/ssl/private/$domain-key.pem" "/etc/gitlab/ssl/$domain.key"
+ln -s "/etc/ssl/private/$domain-crt.pem" "/etc/gitlab/ssl/$domain.crt"
 sed -i -E "s,^(external_url\s+).+,\1'https://$domain'," /etc/gitlab/gitlab.rb
 sed -i -E "s,^(\s*#\s*)?(nginx\['redirect_http_to_https'\]\s+).+,\2= true," /etc/gitlab/gitlab.rb
 
@@ -183,8 +152,6 @@ find \
     -name 'ssh_host_*_key.pub' \
     -exec sh -c "(echo -n '$domain '; cat {})" \; \
     >$domain.ssh_known_hosts
-cp /etc/ssl/private/$domain-crt.pem .
-openssl x509 -outform der -in $domain-crt.pem -out $domain-crt.der
 rm -f gitlab-runner-authentication-token-*.json
 # register the ubuntu 22.04 shell runner.
 # see https://docs.gitlab.com/ee/api/runners.html#create-an-instance-runner

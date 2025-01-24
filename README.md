@@ -75,10 +75,11 @@ git clone git@gitlab.example.com:root/hello.git
 git clone https://root@gitlab.example.com/root/hello.git
 ```
 
-**NB** This vagrant environment does not have a proper SSL certificate, as such,
-HTTPS cloning will fail with `SSL certificate problem: self signed certificate`.
-To temporarily ignore that error set the [`GIT_SSL_NO_VERIFY` environment
-variable](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables)
+**NB** This vagrant environment certificates are signed by a private CA, as
+such, to prevent TLS verification errors, you must trust it by importing its
+certificate from the `tmp/gitlab-ca/gitlab-ca-crt.pem` file, or, not
+recommended, temporarily, disable all the certificate verifications, by
+setting the [`GIT_SSL_NO_VERIFY` environment variable](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables)
 with `export GIT_SSL_NO_VERIFY=true`.
 
 Make some changes to the cloned repository and push them:

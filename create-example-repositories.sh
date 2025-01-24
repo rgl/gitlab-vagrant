@@ -35,7 +35,6 @@ sudo apt-get install -y git-lfs
 #       /var/opt/gitlab/gitlab-rails/shared/lfs-objects/
 pushd /tmp
 gitlab-create-project use-git-lfs $example_group_id
-export GIT_SSL_NO_VERIFY=true
 git clone https://root:HeyH0Password@$domain/$example_group_name/use-git-lfs.git use-git-lfs && cd use-git-lfs
 git lfs install
 git lfs track '*.md'

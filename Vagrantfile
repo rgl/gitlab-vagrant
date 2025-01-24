@@ -72,6 +72,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provision-resize-disk.sh"
   config.vm.provision "shell", path: "configure-hyperv-guest.sh", args: [GITLAB_IP]
   config.vm.provision "shell", path: "provision-dns-server.sh", args: [GITLAB_IP]
+  config.vm.provision "shell", path: "provision-certificates.sh"
   config.vm.provision "shell", path: "provision-mailpit.sh"
   config.vm.provision "shell", path: "provision.sh", args: [GITLAB_VERSION]
   config.vm.provision "shell", path: "provision-gitlab-source-link-proxy.sh"
