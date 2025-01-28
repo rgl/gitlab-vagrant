@@ -4,24 +4,34 @@ ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 # NB execute apt-cache madison gitlab-ce to list the available versions.
 # see https://gitlab.com/gitlab-org/gitlab-foss/-/tags
 # renovate: datasource=gitlab-tags depName=gitlab-org/gitlab-foss
-gitlab_version = '17.8.1'
-GITLAB_VERSION = "#{gitlab_version}-ce.0"
-GITLAB_IP = '10.10.9.99'
-DISK_SIZE_GB = 32
+config_gitlab_version = '17.8.1'
+CONFIG_GITLAB_VERSION = "#{config_gitlab_version}-ce.0"
+CONFIG_DISK_SIZE_GB = 32
+
+CONFIG_GITLAB_FQDN  = 'gitlab.example.com'
+CONFIG_GITLAB_IP    = '10.10.9.99'
+CONFIG_UBUNTU_FQDN  = "ubuntu.#{CONFIG_GITLAB_FQDN}"
+CONFIG_UBUNTU_IP    = '10.10.9.98'
+CONFIG_INCUS_FQDN   = "incus.#{CONFIG_GITLAB_FQDN}"
+CONFIG_INCUS_IP     = '10.10.9.97'
+CONFIG_LXD_FQDN     = "lxd.#{CONFIG_GITLAB_FQDN}"
+CONFIG_LXD_IP       = '10.10.9.96'
+CONFIG_WINDOWS_FQDN = "windows.#{CONFIG_GITLAB_FQDN}"
+CONFIG_WINDOWS_IP   = '10.10.9.95'
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu-22.04-amd64"
 
-  config.vm.hostname = "gitlab.example.com"
+  config.vm.hostname = CONFIG_GITLAB_FQDN
 
-  config.vm.network "private_network", ip: GITLAB_IP, libvirt__forward_mode: 'route', libvirt__dhcp_enabled: false, hyperv__bridge: 'gitlab'
+  config.vm.network "private_network", ip: CONFIG_GITLAB_IP, libvirt__forward_mode: 'route', libvirt__dhcp_enabled: false, hyperv__bridge: 'gitlab'
 
   config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 6*1024
     lv.cpus = 4
     lv.cpu_mode = 'host-passthrough'
     lv.keymap = 'pt'
-    lv.machine_virtual_size = DISK_SIZE_GB
+    lv.machine_virtual_size = CONFIG_DISK_SIZE_GB
     config.vm.synced_folder '.', '/vagrant', type: 'nfs', nfs_version: '4.2', nfs_udp: false
   end
 
@@ -70,11 +80,20 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: "apt-get update"
   config.vm.provision "shell", path: "provision-resize-disk.sh"
-  config.vm.provision "shell", path: "configure-hyperv-guest.sh", args: [GITLAB_IP]
-  config.vm.provision "shell", path: "provision-dns-server.sh", args: [GITLAB_IP]
+  config.vm.provision "shell", path: "configure-hyperv-guest.sh", args: [CONFIG_GITLAB_IP]
+  config.vm.provision "shell", path: "provision-dns-server.sh", args: [
+    CONFIG_GITLAB_IP,
+    CONFIG_UBUNTU_FQDN,
+    CONFIG_UBUNTU_IP,
+    CONFIG_INCUS_FQDN,
+    CONFIG_INCUS_IP,
+    CONFIG_LXD_FQDN,
+    CONFIG_LXD_IP,
+    CONFIG_WINDOWS_FQDN,
+    CONFIG_WINDOWS_IP]
   config.vm.provision "shell", path: "provision-certificates.sh"
   config.vm.provision "shell", path: "provision-mailpit.sh"
-  config.vm.provision "shell", path: "provision.sh", args: [GITLAB_VERSION]
+  config.vm.provision "shell", path: "provision.sh", args: [CONFIG_GITLAB_VERSION]
   config.vm.provision "shell", path: "provision-gitlab-source-link-proxy.sh"
   config.vm.provision "shell", path: "provision-gitlab-cli.sh"
   config.vm.provision "shell", path: "provision-examples.sh"
