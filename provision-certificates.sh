@@ -96,6 +96,51 @@ function create-server-certificate {
     #openssl pkcs12 -info -nodes -passin pass: -in "$domain-key.p12"
 }
 create-server-certificate "$domain"
+create-server-certificate "ubuntu.$domain"
+create-server-certificate "windows.$domain"
+
+# create the client certificates.
+function create-client-certificate {
+    local name="$1"
+    if [ -f "$name-crt.pem" ]; then
+        return
+    fi
+    openssl genrsa \
+        -out "$name-key.pem" \
+        2048 \
+        2>/dev/null
+    chmod 400 "$name-key.pem"
+    openssl req -new \
+        -sha256 \
+        -subj "/CN=$name" \
+        -key "$name-key.pem" \
+        -out "$name-csr.pem"
+    openssl x509 -req -sha256 \
+        -CA "$ca_file_name-crt.pem" \
+        -CAkey "$ca_file_name-key.pem" \
+        -CAcreateserial \
+        -extensions a \
+        -extfile <(echo "[a]
+            extendedKeyUsage=critical,clientAuth
+            ") \
+        -days 365 \
+        -in  "$name-csr.pem" \
+        -out "$name-crt.pem"
+    openssl pkcs12 -export \
+        -keyex \
+        -inkey "$name-key.pem" \
+        -in "$name-crt.pem" \
+        -certfile "$name-crt.pem" \
+        -passout pass: \
+        -out "$name-key.p12"
+    # dump the certificate contents (for logging purposes).
+    #openssl x509 -noout -text -in "$name-crt.pem"
+    #openssl pkcs12 -info -nodes -passin pass: -in "$name-key.p12"
+}
+create-client-certificate ubuntu
+create-client-certificate incus
+create-client-certificate lxd
+create-client-certificate windows
 
 # copy to host.
 mkdir -p "/vagrant/tmp/$ca_file_name"
