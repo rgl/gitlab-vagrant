@@ -51,7 +51,7 @@ function gitlab-create-group {
     local group="$(gitlab-api GET "/groups/$name?with_projects=false" --check-status)"
     local id="$(echo "$group" | jq -r .id)"
 
-    [ "$id" != 'null' ] && echo "$group" || gitlab-api POST /groups name=$name path=$name visibility=public --check-status
+    [ "$id" != 'null' ] && echo "$group" || gitlab-api POST /groups name=$name path=$name visibility=private --check-status
 }
 
 # see https://docs.gitlab.com/api/groups/#list-groups
@@ -81,7 +81,7 @@ function gitlab-create-project {
     #       GitLab is not responding
     set +x
     while true; do
-        body="$(gitlab-api POST /projects "name=$name" "namespace_id=$namespaceId" visibility=public)"
+        body="$(gitlab-api POST /projects "name=$name" "namespace_id=$namespaceId" visibility=private)"
         if jq -e . >/dev/null 2>&1 <<<"$body"; then
             id=$(jq -r .id <<<"$body")
             if [[ -n "$id" ]]; then

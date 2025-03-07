@@ -108,6 +108,12 @@ source /vagrant/_include_gitlab_api.sh
 # disable user signup.
 gitlab-api PUT /application/settings signup_enabled:=false --check-status
 
+# disable the creation of public groups and repositories.
+# NB administrators can still create them, but regular users cannot.
+# see https://docs.gitlab.com/user/public_access/
+# see https://docs.gitlab.com/api/settings/
+gitlab-api PUT /application/settings restricted_visibility_levels:='["public"]' --check-status --print ''
+
 # set the maximum artifacts size to 1 GB (default is 100 MB; gitlab.com default is 1 GB).
 # NB this can be set at the instance level (like in this example), at group level, and project level.
 # NB this can also be set in the UI at Admin Area | CI/CD | Continuous Integration and Deployment | Maximum artifacts size (MB).
