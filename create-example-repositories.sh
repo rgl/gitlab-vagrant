@@ -23,7 +23,8 @@ git config --global user.email root@$domain
 git config --global push.default simple
 
 # install git-lfs.
-# see http://docs.gitlab.com/ce/workflow/lfs/manage_large_binaries_with_git_lfs.html
+# see https://docs.gitlab.com/administration/lfs/
+# see https://docs.gitlab.com/topics/git/lfs/
 # see https://github.com/github/git-lfs/wiki/Installation
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 sudo apt-get install -y git-lfs

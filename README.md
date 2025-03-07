@@ -215,7 +215,7 @@ You can see the current targets at:
 
 # Command Line Interface
 
-GitLab has an [API](https://docs.gitlab.com/ee/api/index.html) which can be used from different applications, one of those, is the [`gitlab` cli application](https://python-gitlab.readthedocs.io/en/stable/cli-usage.html), which is already installed in the vagrant environment (see [provision-gitlab-cli.sh](provision-gitlab-cli.sh)) and can be used as:
+GitLab has an [API](https://docs.gitlab.com/api/) which can be used from different applications, one of those, is the [`gitlab` cli application](https://python-gitlab.readthedocs.io/en/stable/cli-usage.html), which is already installed in the vagrant environment (see [provision-gitlab-cli.sh](provision-gitlab-cli.sh)) and can be used as:
 
 ```bash
 vagrant ssh

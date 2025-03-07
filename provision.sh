@@ -92,7 +92,7 @@ mv /tmp/gitlab-root-personal-access-token.txt /vagrant/tmp
 
 # set the gitlab sign in page title and description.
 # NB since gitlab 12.7 this can also be done with the appearance api.
-#    see https://docs.gitlab.com/ee/api/appearance.html.
+#    see https://docs.gitlab.com/api/appearance/.
 # see https://gitlab.com/gitlab-org/gitlab-foss/blob/v17.9.1/app/models/appearance.rb
 gitlab-rails runner -e production - <<'EOF'
 a = Appearance.first_or_initialize
@@ -111,7 +111,7 @@ gitlab-api PUT /application/settings signup_enabled:=false --check-status
 # set the maximum artifacts size to 1 GB (default is 100 MB; gitlab.com default is 1 GB).
 # NB this can be set at the instance level (like in this example), at group level, and project level.
 # NB this can also be set in the UI at Admin Area | CI/CD | Continuous Integration and Deployment | Maximum artifacts size (MB).
-# see https://docs.gitlab.com/ce/api/settings.html
+# see https://docs.gitlab.com/api/settings/
 # see https://gitlab.example.com/admin/application_settings/ci_cd
 # see https://gitlab.example.com/help/user/admin_area/settings/continuous_integration#maximum-artifacts-size
 # see https://gitlab.example.com/help/user/gitlab_com/index.md#gitlab-cicd
@@ -131,7 +131,7 @@ gitlab-api PUT /application/settings archive_builds_in_human_readable=3d --check
 
 # enable prometheus metrics.
 # see https://gitlab.example.com/help/administration/monitoring/prometheus/gitlab_metrics#gitlab-prometheus-metrics
-# see https://docs.gitlab.com/ce/api/settings.html
+# see https://docs.gitlab.com/api/settings/
 sed -i -E "s,^(\s*#\s*)?(prometheus\['listen_address'\]).+,\2 = '0.0.0.0:9090'," /etc/gitlab/gitlab.rb
 gitlab-api PUT /application/settings prometheus_metrics_enabled:=true --check-status
 gitlab-ctl reconfigure
@@ -154,9 +154,9 @@ find \
     >$domain.ssh_known_hosts
 rm -f gitlab-runner-authentication-token-*.json
 # register the ubuntu 22.04 shell runner.
-# see https://docs.gitlab.com/ee/api/runners.html#create-an-instance-runner
-# see https://docs.gitlab.com/ee/api/users.html#create-a-runner-linked-to-a-user
-# see https://docs.gitlab.com/runner/executors/shell.html
+# see https://docs.gitlab.com/api/runners/#create-a-runner
+# see https://docs.gitlab.com/api/users/#create-a-runner-linked-to-a-user
+# see https://docs.gitlab.com/runner/executors/shell/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
     tag_list='shell,linux,ubuntu,ubuntu-22.04' \
@@ -164,7 +164,7 @@ gitlab-api POST /user/runners \
     --check-status \
     >gitlab-runner-authentication-token-ubuntu-22.04-shell.json
 # register the ubuntu 22.04 docker runner.
-# see https://docs.gitlab.com/runner/executors/docker.html
+# see https://docs.gitlab.com/runner/executors/docker/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
     tag_list='docker,linux,ubuntu,ubuntu-22.04' \
@@ -172,8 +172,8 @@ gitlab-api POST /user/runners \
     --check-status \
     >gitlab-runner-authentication-token-ubuntu-22.04-docker.json
 # register the ubuntu 22.04 incus runner.
-# see https://docs.gitlab.com/runner/executors/custom.html
-# see https://docs.gitlab.com/runner/executors/custom_examples/lxd.html
+# see https://docs.gitlab.com/runner/executors/custom/
+# see https://docs.gitlab.com/runner/executors/custom_examples/lxd/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
     tag_list='incus,linux,ubuntu,ubuntu-22.04' \
@@ -181,8 +181,8 @@ gitlab-api POST /user/runners \
     --check-status \
     >gitlab-runner-authentication-token-ubuntu-22.04-incus.json
 # register the ubuntu 22.04 lxd runner.
-# see https://docs.gitlab.com/runner/executors/custom.html
-# see https://docs.gitlab.com/runner/executors/custom_examples/lxd.html
+# see https://docs.gitlab.com/runner/executors/custom/
+# see https://docs.gitlab.com/runner/executors/custom_examples/lxd/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
     tag_list='lxd,linux,ubuntu,ubuntu-22.04' \
@@ -190,7 +190,7 @@ gitlab-api POST /user/runners \
     --check-status \
     >gitlab-runner-authentication-token-ubuntu-22.04-lxd.json
 # register the k3s k8s runner.
-# see https://docs.gitlab.com/runner/executors/kubernetes/index.html
+# see https://docs.gitlab.com/runner/executors/kubernetes/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
     tag_list='k3s,k8s' \
@@ -198,7 +198,7 @@ gitlab-api POST /user/runners \
     --check-status \
     >gitlab-runner-authentication-token-kubernetes-k3s.json
 # register the windows 2022 shell runner.
-# see https://docs.gitlab.com/runner/executors/shell.html
+# see https://docs.gitlab.com/runner/executors/shell/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
     tag_list='pwsh,shell,vs2022,windows,windows-2022' \
@@ -206,7 +206,7 @@ gitlab-api POST /user/runners \
     --check-status \
     >gitlab-runner-authentication-token-windows-2022-shell.json
 # register the windows 2022 docker runner.
-# see https://docs.gitlab.com/runner/executors/docker.html
+# see https://docs.gitlab.com/runner/executors/docker/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
     tag_list='docker,windows,windows-2022' \

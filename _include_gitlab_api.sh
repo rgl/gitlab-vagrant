@@ -11,7 +11,7 @@ function gitlab-psql {
 
 gitlab_private_token=$(cat /vagrant/tmp/gitlab-root-personal-access-token.txt)
 
-# see https://docs.gitlab.com/ce/api/README.html
+# see https://docs.gitlab.com/api/rest/
 function gitlab-api {
     local method=$1; shift
     local path=$1; shift
@@ -54,12 +54,12 @@ function gitlab-create-group {
     [ "$id" != 'null' ] && echo "$group" || gitlab-api POST /groups name=$name path=$name visibility=public --check-status
 }
 
-# see https://docs.gitlab.com/ce/api/groups.html#list-groups
+# see https://docs.gitlab.com/api/groups/#list-groups
 function gitlab-get-groups {
     gitlab-api GET /groups --check-status
 }
 
-# see https://docs.gitlab.com/ce/api/members.html#add-a-member-to-a-group-or-project
+# see https://docs.gitlab.com/api/members/#add-a-member-to-a-group-or-project
 function gitlab-add-user-to-all-groups {
     local user_id=$1
     local access_level=$2
@@ -118,7 +118,7 @@ function gitlab-create-project-and-import {
     rm -rf $destinationProjectName
 }
 
-# see https://docs.gitlab.com/ce/api/users.html#user-creation
+# see https://docs.gitlab.com/api/users/#create-a-user
 function gitlab-create-user {
     local username=$1
     local name=$2
@@ -134,7 +134,7 @@ function gitlab-create-user {
         --check-status
 }
 
-# see https://docs.gitlab.com/ce/api/users.html#for-normal-users
+# see https://docs.gitlab.com/api/users/#as-a-regular-user
 function gitlab-get-user {
     local username=$1
 
@@ -143,7 +143,7 @@ function gitlab-get-user {
         --check-status
 }
 
-# see https://docs.gitlab.com/ce/api/users.html#create-an-impersonation-token
+# see https://docs.gitlab.com/api/user_tokens/#create-an-impersonation-token
 function gitlab-create-user-impersonation-token {
     local user_id="$1"
     local name="$2"
@@ -182,9 +182,9 @@ fi
 # NB the public keys should end-up in /var/opt/gitlab/.ssh/authorized_keys.
 #    NB that happens asynchronously via a sidekick job, as such, it might
 #       not be immediately visible.
-# see https://docs.gitlab.com/ce/ssh/
-# see https://docs.gitlab.com/ce/administration/raketasks/maintenance.html#rebuild-authorized_keys-file
-# TODO consider switching to https://docs.gitlab.com/ce/administration/operations/fast_ssh_key_lookup.html
+# see https://docs.gitlab.com/user/ssh/
+# see https://docs.gitlab.com/administration/raketasks/maintenance/#rebuild-authorized_keys-file
+# TODO consider switching to https://docs.gitlab.com/administration/operations/fast_ssh_key_lookup/
 if [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen -f ~/.ssh/id_rsa -t rsa -b 2048 -C "$USER@$domain" -N ''
     gitlab-api POST /user/keys "title=$USER@$domain" key=@~/.ssh/id_rsa.pub --check-status
