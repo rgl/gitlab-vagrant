@@ -22,11 +22,6 @@ gitlab-psql --version
 echo 'GitLab projects:'
 gitlab -o yaml -f id,web_url project list --get-all
 
-# try the source-link-proxy.
-http -v --check-status --ignore-stdin \
-    https://root:HeyH0Password@$domain/example/ubuntu-vagrant/raw/master/.gitignore \
-    User-Agent:SourceLink
-
 # show GitLab address and root credentials.
 echo "GitLab is running at https://$domain"
 echo 'Sign in with the root user and the HeyH0Password password'

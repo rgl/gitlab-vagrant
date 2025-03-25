@@ -11,7 +11,6 @@ example_group_id="$(gitlab-create-group $example_group_name | jq -r .id)"
 gitlab-create-project-and-import https://github.com/rgl/gitlab-ci-validate-jwt.git gitlab-ci-validate-jwt $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/gitlab-vagrant.git gitlab-vagrant $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/ubuntu-vagrant.git ubuntu-vagrant $example_group_id
-gitlab-create-project-and-import https://github.com/rgl/example-dotnet-source-link.git example-dotnet-source-link $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/MailBounceDetector.git MailBounceDetector $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/hello-puppeteer-windows-container.git hello-puppeteer-windows-container $example_group_id
 gitlab-create-project-and-import https://github.com/rgl/ubuntu-docker-compose-example.git ubuntu-docker-compose-example $example_group_id

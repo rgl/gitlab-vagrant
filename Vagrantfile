@@ -94,7 +94,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provision-certificates.sh"
   config.vm.provision "shell", path: "provision-mailpit.sh"
   config.vm.provision "shell", path: "provision.sh", args: [CONFIG_GITLAB_VERSION]
-  config.vm.provision "shell", path: "provision-gitlab-source-link-proxy.sh"
   config.vm.provision "shell", path: "provision-gitlab-cli.sh"
   config.vm.provision "shell", path: "provision-examples.sh"
   config.vm.provision "shell", path: "summary.sh"
