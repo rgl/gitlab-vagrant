@@ -3,6 +3,8 @@ set -euxo pipefail
 
 source /vagrant/_include_gitlab_api.sh
 
+VAULT_ADDR="https://vault.$domain:8200"
+
 # create the example group.
 example_group_name='example'
 example_group_id="$(gitlab-create-group $example_group_name | jq -r .id)"
@@ -47,6 +49,96 @@ git add *
 git commit -m 'init'
 git push
 popd
+
+# create an example repository to show how to use openbao vault secrets.
+# see https://docs.gitlab.com/ci/secrets/id_token_authentication/
+# see https://docs.gitlab.com/ci/secrets/hashicorp_vault/
+# see https://gitlab.example.com/oauth/discovery/keys
+# see https://gitlab.example.com/.well-known/openid-configuration
+# see https://github.com/rgl/gitlab-ci-validate-jwt
+pushd /tmp
+gitlab-create-project example-gitlab-vault-secrets $example_group_id
+git clone https://root:HeyH0Password@$domain/$example_group_name/example-gitlab-vault-secrets.git example-gitlab-vault-secrets && cd example-gitlab-vault-secrets
+# add the .gitlab-ci.yml file.
+cat >.gitlab-ci.yml <<'EOF'
+test:
+  tags:
+    - ubuntu
+    - shell
+  variables:
+    VAULT_ADDR: @@VAULT_ADDR@@
+  id_tokens:
+    VAULT_ID_TOKEN:
+      aud: $VAULT_ADDR
+  script:
+    - |
+      set -euo pipefail
+      if [ -z "$VAULT_ID_TOKEN" ]; then
+        echo "ERROR: The VAULT_ID_TOKEN environment variable MUST NOT be empty."
+        exit 1
+      fi
+      echo "Exchanging the GitLab CI ID Token with the OpenBao Vault Token..."
+      export VAULT_TOKEN="$(docker run \
+        --rm \
+        --env VAULT_ADDR \
+        --interactive \
+        --volume /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro \
+        ghcr.io/openbao/openbao:@@OPENBAO_VERSION@@ \
+        bao write \
+          -field=token \
+          auth/jwt/login \
+          role=example-gitlab-vault-secrets-main \
+          jwt=- \
+          <<<"$VAULT_ID_TOKEN")"
+      if [ -z "$VAULT_TOKEN" ]; then
+        echo "ERROR: The VAULT_TOKEN environment variable MUST NOT be empty."
+        exit 1
+      fi
+      echo "Getting the example-gitlab-vault-secrets/main/user secret from OpenBao Vault..."
+      docker run \
+        --rm \
+        --env VAULT_ADDR \
+        --env VAULT_TOKEN \
+        --volume /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro \
+        ghcr.io/openbao/openbao:@@OPENBAO_VERSION@@ \
+        bao kv get \
+          -format=json \
+          secret/example-gitlab-vault-secrets/main/user
+EOF
+# renovate: datasource=github-releases depName=openbao/openbao
+openbao_version='2.2.0'
+sed -i -E \
+  -e "s,@@OPENBAO_VERSION@@,$openbao_version,g" \
+  -e "s,@@VAULT_ADDR@@,$VAULT_ADDR,g" \
+  .gitlab-ci.yml
+git add * .gitlab-ci.yml
+git commit -m 'init'
+git push
+popd
+# configure the example-gitlab-vault-secrets project vault secrets.
+bao kv put secret/example-gitlab-vault-secrets/main/user \
+  username=alibaba \
+  password=- \
+  <<<"opensesame"
+bao policy write example-gitlab-vault-secrets-main - <<'EOF'
+path "secret/data/example-gitlab-vault-secrets/main/*" {
+  capabilities = ["read"]
+}
+EOF
+bao write auth/jwt/role/example-gitlab-vault-secrets-main - <<EOF
+{
+  "role_type": "jwt",
+  "policies": ["example-gitlab-vault-secrets-main"],
+  "token_explicit_max_ttl": 60,
+  "user_claim": "user_email",
+  "bound_audiences": "$VAULT_ADDR",
+  "bound_claims": {
+    "project_path": "$example_group_name/example-gitlab-vault-secrets",
+    "ref_type": "branch",
+    "ref": "main"
+  }
+}
+EOF
 
 # create a new repository with a .gitlab-ci.yml file to show
 # information about the ubuntu shell gitlab-runner environment.

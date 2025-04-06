@@ -10,6 +10,8 @@ CONFIG_DISK_SIZE_GB = 32
 
 CONFIG_GITLAB_FQDN  = 'gitlab.example.com'
 CONFIG_GITLAB_IP    = '10.10.9.99'
+CONFIG_VAULT_FQDN   = "vault.#{CONFIG_GITLAB_FQDN}"
+CONFIG_VAULT_IP     = '10.10.9.99'
 CONFIG_UBUNTU_FQDN  = "ubuntu.#{CONFIG_GITLAB_FQDN}"
 CONFIG_UBUNTU_IP    = '10.10.9.98'
 CONFIG_INCUS_FQDN   = "incus.#{CONFIG_GITLAB_FQDN}"
@@ -83,6 +85,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "configure-hyperv-guest.sh", args: [CONFIG_GITLAB_IP]
   config.vm.provision "shell", path: "provision-dns-server.sh", args: [
     CONFIG_GITLAB_IP,
+    CONFIG_VAULT_FQDN,
+    CONFIG_VAULT_IP,
     CONFIG_UBUNTU_FQDN,
     CONFIG_UBUNTU_IP,
     CONFIG_INCUS_FQDN,
@@ -94,6 +98,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provision-certificates.sh"
   config.vm.provision "shell", path: "provision-mailpit.sh"
   config.vm.provision "shell", path: "provision.sh", args: [CONFIG_GITLAB_VERSION]
+  config.vm.provision "shell", path: "provision-openbao.sh", args: [CONFIG_GITLAB_FQDN, CONFIG_VAULT_FQDN]
   config.vm.provision "shell", path: "provision-gitlab-cli.sh"
   config.vm.provision "shell", path: "provision-examples.sh"
   config.vm.provision "shell", path: "summary.sh"

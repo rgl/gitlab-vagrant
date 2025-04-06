@@ -96,6 +96,7 @@ function create-server-certificate {
     #openssl pkcs12 -info -nodes -passin pass: -in "$domain-key.p12"
 }
 create-server-certificate "$domain"
+create-server-certificate "vault.$domain"
 create-server-certificate "ubuntu.$domain"
 create-server-certificate "windows.$domain"
 

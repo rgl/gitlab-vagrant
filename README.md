@@ -30,14 +30,17 @@ Install the [Ubuntu 22.04 UEFI Base Box](https://github.com/rgl/ubuntu-vagrant).
 
 Start the environment:
 
-```sh
+```bash
 vagrant up --no-destroy-on-error
 ```
 
-Configure your host system to resolve the `gitlab.example.com` domain to this vagrant environment IP address, e.g.:
+Configure your host system to resolve the `gitlab.example.com` and `vault.gitlab.example.com` domains to this vagrant environment IP address, e.g.:
 
-```sh
-echo '10.10.9.99 gitlab.example.com' | sudo tee -a /etc/hosts
+```bash
+sudo tee -a /etc/hosts <<'EOF'
+10.10.9.99 gitlab.example.com
+10.10.9.99 vault.gitlab.example.com
+EOF
 ```
 
 Sign In into GitLab using the `root` username and the `HeyH0Password` password at:
@@ -58,7 +61,7 @@ After login, you should add your [public SSH key](https://git-scm.com/book/en/v2
 Add a new SSH key with your SSH public key, for that, just copy the contents of
 your `id_rsa.pub` file. Get its contents with, e.g.:
 
-```sh
+```bash
 cat ~/.ssh/id_rsa.pub
 ```
 
@@ -68,7 +71,7 @@ Create a new repository named `hello` at:
 
 You can now clone that repository with SSH or HTTPS:
 
-```sh
+```bash
 git clone git@gitlab.example.com:root/hello.git
 git clone https://root@gitlab.example.com/root/hello.git
 ```
@@ -82,7 +85,7 @@ with `export GIT_SSL_NO_VERIFY=true`.
 
 Make some changes to the cloned repository and push them:
 
-```sh
+```bash
 cd hello
 echo '# Hello World' >> README.md
 git add README.md
@@ -144,7 +147,7 @@ application** for it to pick it up.
 Give it a try by cloning the example repository (created by
 [create-example-repositories.sh](create-example-repositories.sh)):
 
-```sh
+```bash
 git clone https://root:HeyH0Password@gitlab.example.com/example/use-git-lfs.git
 ```
 
@@ -154,13 +157,13 @@ Lets get familiar with `git-lfs` by running some commands.
 
 See the available lfs commands:
 
-```sh
+```bash
 git lfs
 ```
 
 Which file patterns are currently being tracked:
 
-```sh
+```bash
 git lfs track
 ```
 
@@ -169,13 +172,13 @@ track. e.g., with `git lfs track "*.iso"`.
 
 See which files are actually tracked:
 
-```sh
+```bash
 git lfs ls-files
 ```
 
 See the `git-lfs` environment:
 
-```sh
+```bash
 git lfs env
 ```
 
