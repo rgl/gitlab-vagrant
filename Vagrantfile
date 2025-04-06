@@ -20,7 +20,7 @@ CONFIG_WINDOWS_FQDN = "windows.#{CONFIG_GITLAB_FQDN}"
 CONFIG_WINDOWS_IP   = '10.10.9.95'
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu-22.04-amd64"
+  config.vm.box = "ubuntu-22.04-uefi-amd64"
 
   config.vm.hostname = CONFIG_GITLAB_FQDN
 

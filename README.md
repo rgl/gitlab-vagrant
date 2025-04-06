@@ -26,7 +26,7 @@ Prometheus is available at http://gitlab.example.com:9090/.
 
 # Usage
 
-Install the [Ubuntu 22.04 Base Box](https://github.com/rgl/ubuntu-vagrant).
+Install the [Ubuntu 22.04 UEFI Base Box](https://github.com/rgl/ubuntu-vagrant).
 
 Start the environment:
 
