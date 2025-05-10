@@ -106,7 +106,7 @@ test:
           secret/example-gitlab-vault-secrets/main/user
 EOF
 # renovate: datasource=github-releases depName=openbao/openbao
-openbao_version='2.2.0'
+openbao_version='2.2.1'
 sed -i -E \
   -e "s,@@OPENBAO_VERSION@@,$openbao_version,g" \
   -e "s,@@VAULT_ADDR@@,$VAULT_ADDR,g" \
