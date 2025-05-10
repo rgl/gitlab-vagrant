@@ -78,18 +78,19 @@ test:
         exit 1
       fi
       echo "Exchanging the GitLab CI ID Token with the OpenBao Vault Token..."
-      export VAULT_TOKEN="$(docker run \
-        --rm \
-        --env VAULT_ADDR \
-        --interactive \
-        --volume /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro \
-        ghcr.io/openbao/openbao:@@OPENBAO_VERSION@@ \
-        bao write \
-          -field=token \
-          auth/jwt/login \
-          role=example-gitlab-vault-secrets-main \
-          jwt=- \
-          <<<"$VAULT_ID_TOKEN")"
+      export VAULT_TOKEN="$(
+        echo -n "$VAULT_ID_TOKEN" \
+          | docker run \
+            --rm \
+            --env VAULT_ADDR \
+            --interactive \
+            --volume /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro \
+            ghcr.io/openbao/openbao:@@OPENBAO_VERSION@@ \
+            bao write \
+              -field=token \
+              auth/jwt/login \
+              role=example-gitlab-vault-secrets-main \
+              jwt=-)"
       if [ -z "$VAULT_TOKEN" ]; then
         echo "ERROR: The VAULT_TOKEN environment variable MUST NOT be empty."
         exit 1
@@ -116,10 +117,10 @@ git commit -m 'init'
 git push
 popd
 # configure the example-gitlab-vault-secrets project vault secrets.
-bao kv put secret/example-gitlab-vault-secrets/main/user \
-  username=alibaba \
-  password=- \
-  <<<"opensesame"
+echo -n 'opensesame' \
+  | bao kv put secret/example-gitlab-vault-secrets/main/user \
+    username=alibaba \
+    password=-
 bao policy write example-gitlab-vault-secrets-main - <<'EOF'
 path "secret/data/example-gitlab-vault-secrets/main/*" {
   capabilities = ["read"]
