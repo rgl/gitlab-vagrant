@@ -5,7 +5,7 @@
 
 set -eux
 
-gitlab_version="${1:-17.11.2-ce.0}"; shift || true
+gitlab_version="${1:-18.0.1-ce.0}"; shift || true
 domain=$(hostname --fqdn)
 testing=true
 
@@ -69,8 +69,8 @@ fi
 gitlab-ctl reconfigure
 
 # set the gitlab root user password and create a personal access token.
-# see https://gitlab.com/gitlab-org/gitlab-foss/blob/v17.11.2/app/models/user.rb
-# see https://gitlab.com/gitlab-org/gitlab-foss/blob/v17.11.2/app/models/personal_access_token.rb
+# see https://gitlab.com/gitlab-org/gitlab-foss/blob/v18.0.1/app/models/user.rb
+# see https://gitlab.com/gitlab-org/gitlab-foss/blob/v18.0.1/app/models/personal_access_token.rb
 gitlab-rails runner -e production - <<'EOF'
 u = User.first
 u.password_automatically_set = false
@@ -93,7 +93,7 @@ mv /tmp/gitlab-root-personal-access-token.txt /vagrant/tmp
 # set the gitlab sign in page title and description.
 # NB since gitlab 12.7 this can also be done with the appearance api.
 #    see https://docs.gitlab.com/api/appearance/.
-# see https://gitlab.com/gitlab-org/gitlab-foss/blob/v17.11.2/app/models/appearance.rb
+# see https://gitlab.com/gitlab-org/gitlab-foss/blob/v18.0.1/app/models/appearance.rb
 gitlab-rails runner -e production - <<'EOF'
 a = Appearance.first_or_initialize
 a.title = 'GitLab Community Edition'
