@@ -105,6 +105,17 @@ EOF
 apt-get install -y jq
 source /vagrant/_include_gitlab_api.sh
 
+# disable telemetry.
+# see https://gitlab.example.com/admin/application_settings/metrics_and_profiling
+# see https://docs.gitlab.com/api/settings/
+gitlab-api PUT /application/settings \
+    usage_ping_enabled:=false \
+    version_check_enabled:=false \
+    gitlab_product_usage_data_enabled:=false \
+    snowplow_enabled:=false \
+    --check-status \
+    --print ''
+
 # disable user signup.
 gitlab-api PUT /application/settings signup_enabled:=false --check-status
 
