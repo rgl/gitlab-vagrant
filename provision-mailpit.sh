@@ -35,6 +35,7 @@ Type=simple
 User=mailpit
 Group=mailpit
 ExecStart=/opt/mailpit/bin/mailpit \
+    --disable-version-check \
     --db-file /opt/mailpit/data/mailpit.db \
     --smtp-auth-accept-any \
     --smtp-auth-allow-insecure
