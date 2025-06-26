@@ -4,7 +4,7 @@ set -eux
 # install.
 # see https://pypi.org/project/python-gitlab/
 # renovate: datasource=pypi depName=python-gitlab
-python_gitlab_version='5.6.0'
+python_gitlab_version='6.0.0'
 apt-get install -y python3-pip
 python3 -m pip install "python-gitlab==$python_gitlab_version"
 # NB on Windows, to trust the certificates in the Windows CA trust store
