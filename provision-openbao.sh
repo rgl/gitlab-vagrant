@@ -42,7 +42,7 @@ apt-get install -y httpie jq
 # see https://openbao.org/docs/internals/security/
 # see https://github.com/openbao/openbao
 # renovate: datasource=github-releases depName=openbao/openbao
-openbao_version='2.2.2'
+openbao_version='2.3.1'
 url="https://github.com/openbao/openbao/releases/download/v$openbao_version/bao_${openbao_version}_linux_amd64.deb"
 p="$(basename "$url")"
 wget -qO "$p" "$url"
