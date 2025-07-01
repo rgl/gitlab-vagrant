@@ -116,6 +116,10 @@ git add * .gitlab-ci.yml
 git commit -m 'init'
 git push
 popd
+# ensure we can access bao.
+# NB without this, for some unknown reason, bao kv put fails with:
+#     Get "https://vault.gitlab.example.com:8200/v1/sys/internal/ui/mounts/secret/example-gitlab-vault-secrets/main/user": dial tcp: lookup vault.gitlab.example.com on 127.0.0.53:53: read udp 127.0.0.1:44968->127.0.0.53:53: i/o timeout
+while ! bao status >/dev/null 2>&1; do sleep 1; done
 # configure the example-gitlab-vault-secrets project vault secrets.
 echo -n 'opensesame' \
   | bao kv put secret/example-gitlab-vault-secrets/main/user \
