@@ -1,6 +1,7 @@
 param(
-    $vmId,
-    $bridgesJson
+    [string]$vmId,
+    [int64]$osDiskSizeGb,
+    [string]$bridgesJson
 )
 
 Set-StrictMode -Version Latest
@@ -13,9 +14,17 @@ trap {
     Exit 1
 }
 
-$bridges = ConvertFrom-Json $bridgesJson
+$bridges = @(ConvertFrom-Json $bridgesJson)
 
 $vm = Get-VM -Id $vmId
+
+# resize the os disk.
+$osDiskSizeBytes = $osDiskSizeGb * 1GB
+$osDisk = Get-VMHardDiskDrive -VM $vm | Select-Object -First 1
+$osVhdInfo = Get-VHD -Path $osDisk.Path
+if ($osVhdInfo.Size -lt $osDiskSizeBytes) {
+    Resize-VHD -Path $osDisk.Path -SizeBytes $osDiskSizeBytes
+}
 
 # reconfigure the network adapters to use the given switch names.
 # NB vagrant has already configured ALL network interfaces to use

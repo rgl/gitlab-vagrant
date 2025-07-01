@@ -70,6 +70,7 @@ Vagrant.configure(2) do |config|
           '-File',
           'configure-hyperv-vm.ps1',
           machine.id,
+          CONFIG_DISK_SIZE_GB.to_s,
           bridges.to_json
         ) or raise "failed to configure hyper-v vm with exit code #{$?.exitstatus}"
       end
