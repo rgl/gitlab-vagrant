@@ -105,6 +105,9 @@ GITHUB_COM_TOKEN='YOUR_GITHUB_PERSONAL_TOKEN' ./renovate.sh
 Create the required virtual switches:
 
 ```bash
+# NB HYPERV_SWITCH_NAME should be created as described in
+#    https://github.com/rgl/ubuntu-vagrant.
+export HYPERV_SWITCH_NAME='Vagrant'
 pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass <<'EOF'
 @(
   @{Name='gitlab'; IpAddress='10.10.9.1'}
