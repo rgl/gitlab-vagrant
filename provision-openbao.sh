@@ -42,7 +42,7 @@ apt-get install -y httpie jq
 # see https://openbao.org/docs/internals/security/
 # see https://github.com/openbao/openbao
 # renovate: datasource=github-releases depName=openbao/openbao
-openbao_version='2.3.1'
+openbao_version='2.4.1'
 url="https://github.com/openbao/openbao/releases/download/v$openbao_version/bao_${openbao_version}_linux_amd64.deb"
 p="$(basename "$url")"
 wget -qO "$p" "$url"
@@ -89,6 +89,14 @@ listener "tcp" {
     telemetry {
         unauthenticated_metrics_access = true
     }
+}
+
+# enable auditing to stdout (use journalctl -u openbao to see it).
+audit "file" "stdout" {
+  options {
+    file_path = "stdout"
+    log_raw = "true"
+  }
 }
 
 api_addr = "https://$domain:8200"
@@ -203,10 +211,10 @@ http $VAULT_ADDR/v1/auth/token/lookup-self \
     "X-Vault-Token: $(cat ~/.vault-token)" \
     | jq .data
 
-# enable auditing to stdout (use journalctl -u openbao to see it).
+# list audits.
+# NB the audit is set in the openbao.hcl file.
 # see https://openbao.org/docs/commands/audit/
 # see https://openbao.org/docs/commands/audit/enable/
-bao audit enable file file_path=stdout log_raw=true
 bao audit list
 
 # enable the jwt authentication method.
