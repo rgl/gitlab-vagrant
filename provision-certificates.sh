@@ -140,7 +140,6 @@ function create-client-certificate {
 }
 create-client-certificate ubuntu
 create-client-certificate incus
-create-client-certificate lxd
 create-client-certificate windows
 
 # copy to host.

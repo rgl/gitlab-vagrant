@@ -197,15 +197,6 @@ gitlab-api POST /user/runners \
     description='Incus / Ubuntu 22.04' \
     --check-status \
     >gitlab-runner-authentication-token-ubuntu-22.04-incus.json
-# register the ubuntu 22.04 lxd runner.
-# see https://docs.gitlab.com/runner/executors/custom/
-# see https://docs.gitlab.com/runner/executors/custom_examples/lxd/
-gitlab-api POST /user/runners \
-    runner_type=instance_type \
-    tag_list='lxd,linux,ubuntu,ubuntu-22.04' \
-    description='LXD / Ubuntu 22.04' \
-    --check-status \
-    >gitlab-runner-authentication-token-ubuntu-22.04-lxd.json
 # register the k3s k8s runner.
 # see https://docs.gitlab.com/runner/executors/kubernetes/
 gitlab-api POST /user/runners \

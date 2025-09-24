@@ -16,8 +16,6 @@ CONFIG_UBUNTU_FQDN  = "ubuntu.#{CONFIG_GITLAB_FQDN}"
 CONFIG_UBUNTU_IP    = '10.10.9.98'
 CONFIG_INCUS_FQDN   = "incus.#{CONFIG_GITLAB_FQDN}"
 CONFIG_INCUS_IP     = '10.10.9.97'
-CONFIG_LXD_FQDN     = "lxd.#{CONFIG_GITLAB_FQDN}"
-CONFIG_LXD_IP       = '10.10.9.96'
 CONFIG_WINDOWS_FQDN = "windows.#{CONFIG_GITLAB_FQDN}"
 CONFIG_WINDOWS_IP   = '10.10.9.95'
 
@@ -93,8 +91,6 @@ Vagrant.configure(2) do |config|
     CONFIG_UBUNTU_IP,
     CONFIG_INCUS_FQDN,
     CONFIG_INCUS_IP,
-    CONFIG_LXD_FQDN,
-    CONFIG_LXD_IP,
     CONFIG_WINDOWS_FQDN,
     CONFIG_WINDOWS_IP]
   config.vm.provision "shell", path: "provision-certificates.sh"
