@@ -20,7 +20,7 @@ CONFIG_WINDOWS_FQDN = "windows.#{CONFIG_GITLAB_FQDN}"
 CONFIG_WINDOWS_IP   = '10.10.9.95'
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu-22.04-uefi-amd64"
+  config.vm.box = "ubuntu-24.04-uefi-amd64"
 
   config.vm.hostname = CONFIG_GITLAB_FQDN
 
@@ -41,7 +41,7 @@ Vagrant.configure(2) do |config|
     hv.cpus = 4
     hv.enable_virtualization_extensions = false # nested virtualization.
     hv.vlan_id = ENV['HYPERV_VLAN_ID']
-    config.vm.box = "ubuntu-22.04-amd64"
+    config.vm.box = "ubuntu-24.04-amd64"
     # see https://github.com/hashicorp/vagrant/issues/7915
     # see https://github.com/hashicorp/vagrant/blob/10faa599e7c10541f8b7acf2f8a23727d4d44b6e/plugins/providers/hyperv/action/configure.rb#L21-L35
     config.vm.network :private_network, bridge: ENV['HYPERV_SWITCH_NAME'] if ENV['HYPERV_SWITCH_NAME']

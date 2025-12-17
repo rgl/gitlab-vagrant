@@ -23,6 +23,8 @@ cat >/etc/dnsmasq.d/local.conf <<EOF
 bind-interfaces
 interface=eth1
 no-hosts
+server=127.0.0.53
+local=/$config_domain/
 auth-zone=$config_domain
 auth-server=$config_domain
 host-record=$config_gitlab_fqdn,$config_gitlab_ip

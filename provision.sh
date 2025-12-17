@@ -170,33 +170,33 @@ find \
     -exec sh -c "(echo -n '$domain '; cat {})" \; \
     >$domain.ssh_known_hosts
 rm -f gitlab-runner-authentication-token-*.json
-# register the ubuntu 22.04 shell runner.
+# register the ubuntu 24.04 shell runner.
 # see https://docs.gitlab.com/api/runners/#create-a-runner
 # see https://docs.gitlab.com/api/users/#create-a-runner-linked-to-a-user
 # see https://docs.gitlab.com/runner/executors/shell/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
-    tag_list='shell,linux,ubuntu,ubuntu-22.04' \
-    description='Shell / Ubuntu 22.04' \
+    tag_list='shell,linux,ubuntu,ubuntu-24.04' \
+    description='Shell / Ubuntu 24.04' \
     --check-status \
-    >gitlab-runner-authentication-token-ubuntu-22.04-shell.json
-# register the ubuntu 22.04 docker runner.
+    >gitlab-runner-authentication-token-ubuntu-24.04-shell.json
+# register the ubuntu 24.04 docker runner.
 # see https://docs.gitlab.com/runner/executors/docker/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
-    tag_list='docker,linux,ubuntu,ubuntu-22.04' \
-    description='Docker / Ubuntu 22.04' \
+    tag_list='docker,linux,ubuntu,ubuntu-24.04' \
+    description='Docker / Ubuntu 24.04' \
     --check-status \
-    >gitlab-runner-authentication-token-ubuntu-22.04-docker.json
-# register the ubuntu 22.04 incus runner.
+    >gitlab-runner-authentication-token-ubuntu-24.04-docker.json
+# register the ubuntu 24.04 incus runner.
 # see https://docs.gitlab.com/runner/executors/custom/
 # see https://docs.gitlab.com/runner/executors/custom_examples/lxd/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
-    tag_list='incus,linux,ubuntu,ubuntu-22.04' \
-    description='Incus / Ubuntu 22.04' \
+    tag_list='incus,linux,ubuntu,ubuntu-24.04' \
+    description='Incus / Ubuntu 24.04' \
     --check-status \
-    >gitlab-runner-authentication-token-ubuntu-22.04-incus.json
+    >gitlab-runner-authentication-token-ubuntu-24.04-incus.json
 # register the k3s k8s runner.
 # see https://docs.gitlab.com/runner/executors/kubernetes/
 gitlab-api POST /user/runners \
