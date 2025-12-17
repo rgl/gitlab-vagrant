@@ -223,7 +223,7 @@ GitLab has an [API](https://docs.gitlab.com/api/) which can be used from differe
 
 ```bash
 vagrant ssh
-sudo su -l
+sudo -i
 
 # list all users.
 gitlab -o yaml -f id,name,email user list --get-all

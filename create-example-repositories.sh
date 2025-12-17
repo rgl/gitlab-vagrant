@@ -1,9 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
+source ~/.bash_login
 source /vagrant/_include_gitlab_api.sh
-
-VAULT_ADDR="https://vault.$domain:8200"
 
 # create the example group.
 example_group_name='example'
