@@ -209,7 +209,7 @@ gitlab-api POST /user/runners \
 # see https://docs.gitlab.com/runner/executors/shell/
 gitlab-api POST /user/runners \
     runner_type=instance_type \
-    tag_list='pwsh,shell,vs2022,windows,windows-2022' \
+    tag_list='pwsh,shell,vs2026,windows,windows-2022' \
     description='Shell / Windows 2022' \
     --check-status \
     >gitlab-runner-authentication-token-windows-2022-shell.json
