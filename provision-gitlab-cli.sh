@@ -12,7 +12,7 @@ export PATH="$HOME/.venv/bin:$PATH"
 # install.
 # see https://pypi.org/project/python-gitlab/
 # renovate: datasource=pypi depName=python-gitlab
-python_gitlab_version='7.0.0'
+python_gitlab_version='7.1.0'
 python3 -m pip install "python-gitlab==$python_gitlab_version"
 # NB on Windows, to trust the certificates in the Windows CA trust store
 #    you also need to pip3 install python-certifi-win32.
