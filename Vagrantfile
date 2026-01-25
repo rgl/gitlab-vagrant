@@ -4,7 +4,7 @@ ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 # NB execute apt-cache madison gitlab-ce to list the available versions.
 # see https://gitlab.com/gitlab-org/gitlab-foss/-/tags
 # renovate: datasource=gitlab-tags depName=gitlab-org/gitlab-foss
-config_gitlab_version = '18.8.0'
+config_gitlab_version = '18.8.2'
 CONFIG_GITLAB_VERSION = "#{config_gitlab_version}-ce.0"
 CONFIG_DISK_SIZE_GB = 32
 
