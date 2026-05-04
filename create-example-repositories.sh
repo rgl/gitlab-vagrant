@@ -44,6 +44,52 @@ git lfs track '*.md'
 echo 'This file is in lfs' >in-lfs.md
 echo 'This file is in git repo db' >not-in-lfs.txt
 git add .gitattributes # NB git lfs uses this file to track the lfs file patterns.
+cat >.gitlab-ci.yml <<'EOF'
+test-ubuntu:
+  tags:
+    - ubuntu
+    - shell
+  script:
+    - |
+      set -euxo pipefail
+      git lfs env
+      git lfs ls-files --debug
+      ls -laF
+      cat in-lfs.md
+test-incus:
+  tags:
+    - ubuntu
+    - incus
+  script:
+    - |
+      set -euxo pipefail
+      git lfs env
+      git lfs ls-files --debug
+      ls -laF
+      cat in-lfs.md
+test-windows:
+  tags:
+    - windows
+    - pwsh
+  script:
+    - |
+      $FormatEnumerationLimit = -1
+      function Write-Title($title) {
+        Write-Output "#`n# $title`n#"
+      }
+    - |
+      Write-Title 'git lfs env'
+      git lfs env
+    - |
+      Write-Title 'git lfs ls-files --debug'
+      git lfs ls-files --debug
+    - |
+      Write-Title 'Get-ChildItem'
+      Get-ChildItem
+    - |
+      Write-Title 'Get-Content in-lfs.md'
+      Get-Content in-lfs.md
+EOF
 git add *
 git commit -m 'init'
 git push
